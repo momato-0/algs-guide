@@ -1,0 +1,84 @@
+/* サイト共通：色・文字・ページの枠。セクションごとの見た目は css/<セクションID>.css に分ける */
+:root{
+  --bg:#f1f2f5; --surface:#ffffff; --ink:#16181d; --muted:#626a77; --line:#d6dae1; --node:#e9ebf0; --node-line:#d9dce3; --node-top:#f7f8fa; --node-bot:#e1e4ea; --node-hi:rgba(255,255,255,.9);
+  --accent:#ff654a; --top:#f0388a; --top-soft:#ffe3ef; --bot:#1fb3a8; --bot-soft:#dcf5f2;
+  --lit:#ffcf33; --lit-ink:#4a3600; --ball:#e3e6eb; --ball-ink:#4b525d;
+  --fan:rgb(113,44,249); --fan-ink:rgb(98,32,230); --fan-soft:#eee8fb; --chip:rgba(0,0,0,.05); --champ:#f08a00; --champ-sh:rgba(150,70,0,.22); --bub:#fff6d1; --bub-line:#e0b400; --sep:#dde0e6;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-num:"Chakra Petch","Zen Kaku Gothic New",sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#101216; --surface:#191c22; --ink:#eceef2; --muted:#9aa1ad; --line:#2e333d; --node:#2e3440; --node-line:#3c4350; --node-top:#42567a; --node-bot:#1e2229; --node-hi:rgba(255,255,255,.08);
+  --accent:#ff654a; --top:#ff5aa2; --top-soft:#3b1a2a; --bot:#3fd0c4; --bot-soft:#123330;
+  --lit:#ffd24a; --lit-ink:#3a2a00; --ball:#2b3039; --ball-ink:#b5bcc7;
+  --fan:rgb(113,44,249); --fan-ink:#b89bff; --fan-soft:#2a2340; --chip:rgba(255,255,255,.08); --champ:#ffa531; --champ-sh:rgba(0,0,0,.5); --bub:#332b10; --bub-line:#8a6d10; --sep:#2a2f38; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#101216; --surface:#191c22; --ink:#eceef2; --muted:#9aa1ad; --line:#2e333d; --node:#2e3440; --node-line:#3c4350; --node-top:#42567a; --node-bot:#1e2229; --node-hi:rgba(255,255,255,.08);
+  --accent:#ff654a; --top:#ff5aa2; --top-soft:#3b1a2a; --bot:#3fd0c4; --bot-soft:#123330;
+  --lit:#ffd24a; --lit-ink:#3a2a00; --ball:#2b3039; --ball-ink:#b5bcc7;
+  --fan:rgb(113,44,249); --fan-ink:#b89bff; --fan-soft:#2a2340; --chip:rgba(255,255,255,.08); --champ:#ffa531; --champ-sh:rgba(0,0,0,.5); --bub:#332b10; --bub-line:#8a6d10; --sep:#2a2f38; color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:64px}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.6;padding-inline:16px}
+img{max-width:100%}
+button,select,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--fan);outline-offset:2px}
+h1,h2,h3{text-wrap:balance}
+.wrap{max-width:1040px;margin:0 auto}
+
+/* 目次バー */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:30;margin-inline:-16px;padding:10px 16px;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.nav ul{list-style:none;margin:0 auto;padding:0;max-width:1040px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none}
+.nav a{display:block;white-space:nowrap;text-decoration:none;color:var(--ink);font-weight:700;font-size:13px;padding:6px 14px;border-radius:999px;background:linear-gradient(180deg,var(--node-top),var(--node-bot));border:1px solid var(--node-line)}
+.nav a:hover{border-color:var(--accent)}
+
+/* ヒーロー */
+.hero{padding-block:44px 28px;display:grid;gap:14px}
+.eyebrow{font-family:var(--f-num);font-weight:700;letter-spacing:.14em;font-size:12px;color:var(--accent)}
+.hero h1{margin:0;font-weight:900;font-size:clamp(30px,6vw,50px);line-height:1.2}
+.hero p{margin:0;color:var(--muted);max-width:36em}
+.index{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;margin-top:8px}
+.index a{display:grid;gap:2px;padding:12px 14px;border-radius:14px;text-decoration:none;color:var(--ink);background:linear-gradient(180deg,var(--node-top),var(--node-bot));border:1px solid var(--node-line);box-shadow:inset 0 1px 0 var(--node-hi)}
+.index a:hover{border-color:var(--accent)}
+.index b{font-family:var(--f-num);color:var(--accent);font-size:12px}
+.index span{font-weight:700;font-size:14px}
+
+/* セクションの枠 */
+.sec{padding-block:28px;scroll-margin-top:64px}
+.sec-head{display:flex;align-items:baseline;gap:10px;margin-bottom:14px}
+.sec-head b{font-family:var(--f-num);font-size:13px;color:var(--accent);letter-spacing:.1em}
+.sec-head h2{margin:0;font-size:20px;font-weight:700}
+.todo{background:var(--surface);border:1px dashed var(--line);border-radius:18px;padding:28px 20px;color:var(--muted);text-align:center}
+
+/* フッター */
+.foot{padding-block:28px 56px;margin-top:20px;border-top:1px solid var(--line);font-size:12px;color:var(--muted);display:grid;gap:6px}
+.foot p{margin:0}
+.foot a{color:inherit;text-decoration:underline;text-underline-offset:2px}
+
+/* ---- 開け閉め（どのセクションでも使える）----
+   .fold > .fold-head（.fold-btn）＋ .fold-body ＋ .fold-foot（.fold-btn.bot）。開くと .fold に .open が付く
+   三角はセクションの枠の右はしに寄せるので、枠の左右・下の余白を --fold-px / --fold-pb で伝える（初期値 20px / 28px） */
+.fold-head{position:relative;display:flex;align-items:center;gap:10px;padding-bottom:8px;cursor:pointer}
+/* 開け閉めボタンは、セクションの右はしに三角を貼りつけた形。文字は三角からはみ出してもいい */
+.fold-btn{position:absolute;top:0;right:0;width:118px;height:54px;padding:8px 12px 0 0;border:0;background:none;isolation:isolate;
+  display:flex;flex-direction:column;align-items:flex-end;color:#fff;font:inherit;font-size:16px;font-weight:900;line-height:1.2;text-align:right;white-space:nowrap;text-shadow:0 1px 3px rgba(0,0,0,.45);cursor:pointer}
+.fold-btn::before{content:"";position:absolute;inset:0;z-index:-1;background:#bc3f29;clip-path:polygon(0 0,100% 0,100% 100%);transition:background .15s}
+.fold-head:hover .fold-btn::before,.fold-btn:hover::before{background:#d6492f}
+.fold-btn:focus-visible{outline:none}
+.fold-btn:focus-visible::before{filter:brightness(1.15)}
+.fold-close{display:none}
+.fold.open .fold-open{display:none}
+.fold.open .fold-close{display:inline}
+/* 閉じているときは、三角が収まるぶんだけ線の下をあける */
+.fold:not(.open) .fold-head{padding-bottom:28px}
+.fold-body{position:relative}
+.fold:not(.open) .fold-body{height:0;clip-path:inset(-600px -40px 0 -40px)}
+.fold:not(.open) .fold-body > *{pointer-events:none}
+/* いちばん下の閉じるボタン：セクションの右下の角に三角 */
+.fold-foot{display:none;position:relative;height:30px}
+.fold-btn.bot{top:auto;right:calc(-1 * var(--fold-px,20px));bottom:calc(-1 * var(--fold-pb,28px));width:110px;height:50px;padding:0 12px 8px 0;justify-content:flex-end}
+.fold-btn.bot::before{clip-path:polygon(100% 0,100% 100%,0 100%)}
+.fold.open .fold-foot{display:block}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
