@@ -3,68 +3,15 @@
 #win .day{font-family:var(--f-num);font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--muted)}
 
 /* ---- 決勝ゾーン ---- */
-#win .finals{display:grid;grid-template-columns:1fr auto 1fr;grid-template-rows:auto auto auto;column-gap:20px;row-gap:0;align-items:center;position:relative}
-#win .center{display:flex;flex-direction:column;align-items:center;gap:0;grid-column:2;grid-row:2;align-self:stretch}
-#win .goal{grid-column:1/-1;grid-row:1;justify-self:center;margin-bottom:34px}
-#win .bubble{grid-column:1;grid-row:2;margin-right:18px}
-#win .goal{display:flex;flex-direction:column;align-items:center;white-space:nowrap;font-weight:900;line-height:1.1}
-#win .goal .g1{font-size:15px;transform:translateX(-34%)}
-#win .goal .g2{display:flex;align-items:flex-end;gap:2px}
-#win .goal .champ{display:inline-block;color:var(--champ);transform:rotate(-5deg);padding:6px 0 8px;filter:drop-shadow(0 3px 0 var(--champ-sh))}
-#win .goal .champ-svg{display:block;width:clamp(190px,44vw,250px);height:auto;overflow:visible}
-#win .goal .chase path{fill:none;stroke:#fff6cf;stroke-width:2;stroke-linecap:round;stroke-dasharray:6 94;stroke-dashoffset:100;filter:drop-shadow(0 0 3px #ffd36b)}
-#win .goal .chase{opacity:.6;display:none}
-#win .goal .g3{font-size:15px;padding-bottom:6px}
-#win .goal .g4{display:flex;align-items:center;gap:8px;font-size:clamp(24px,5.6vw,30px);margin-top:4px}
-#win .goal svg{width:58px;height:46px;flex:none}
-/* 見出しのモーション：チャンピオンがぽんっと出て、ときどき揺れる。王冠は上から落ちてきて、キラキラがまたたく */
-@media (prefers-reduced-motion:no-preference){
-  #win .goal .champ{animation:win-champPop .7s cubic-bezier(.3,1.5,.5,1) both}
-  #win .goal .gl{transform-box:fill-box;transform-origin:50% 100%;animation:win-glJump 3.2s both infinite;animation-delay:calc(1s + var(--i) * 60ms)}
-  #win .goal .chase{display:inline}
-  #win .goal .chase path{animation:win-chase 7s linear infinite}
-  #win .ball.lit{animation:win-litGlow 2.8s ease-in-out infinite}
-  #win .goal .g4 svg{animation:win-crownDrop .6s cubic-bezier(.3,1.6,.5,1) .45s both}
-  #win .goal .spk{transform-box:fill-box;transform-origin:center;animation:win-twinkle 1.8s ease-in-out infinite}
-  #win .goal .spk2{animation-delay:.9s}
-}
-@keyframes win-champPop{0%{transform:rotate(-5deg) scale(.4)}60%{transform:rotate(-8deg) scale(1.1)}100%{transform:rotate(-5deg) scale(1)}}
-@keyframes win-glJump{0%{transform:none}2.4%{transform:scale(1.08,.9);animation-timing-function:cubic-bezier(.5,1,.89,1)}10.7%{transform:translateY(-60%) scale(1,1);animation-timing-function:cubic-bezier(.11,0,.5,0)}16.8%{transform:translateY(0) scale(.85,1.2)}19.3%{transform:scale(1.25,.7)}24%{transform:scale(.94,1.08)}28.9%{transform:scale(1.02,.98)}34.4%,100%{transform:none}}
-@keyframes win-chase{from{stroke-dashoffset:100}to{stroke-dashoffset:0}}
-@keyframes win-litGlow{0%,100%{filter:drop-shadow(0 0 4px color-mix(in srgb,var(--lit) 55%,transparent))}50%{filter:drop-shadow(0 0 12px color-mix(in srgb,var(--lit) 95%,transparent))}}
-@keyframes win-crownDrop{0%{transform:translateY(-16px) rotate(-14deg)}100%{transform:none}}
-@keyframes win-twinkle{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(.3);opacity:.35}}
-#win .cloud{position:relative;width:280px;flex:1;min-height:360px;margin-top:6px}
-/* 50pt の点線。ここより上が「点灯（マッチポイント）」 */
-#win .cloud .mpline{position:absolute;left:0;right:0;height:0;border-top:3px dashed var(--lit);opacity:.9;pointer-events:none}
-#win .cloud .shaft{position:absolute;left:50%;top:10px;bottom:62px;border-left:3px solid var(--muted);transform:translateX(-1.5px);border-radius:2px}
-#win .cloud .head{position:absolute;left:50%;top:0;transform:translateX(-50%);width:30px;height:24px}
-#win .cloud .wave{position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:30px;height:66px}
-#win .ball{position:absolute;border-radius:50%;display:grid;place-items:center;background:var(--ball);color:var(--ball-ink);
-  font-family:var(--f-num);font-weight:600;font-variant-numeric:tabular-nums;transform:translate(-50%,-50%);transition:left .5s,top .5s,width .3s,height .3s,background .3s}
-#win .ball small{font-size:.6em;margin-left:1px}
-/* 点灯した玉は手描きの黄色い玉（img/orb-lit.svg）に。光り方も形に沿わせる */
-#win .ball.lit{background:url(../img/orb-lit.svg) center/100% 100% no-repeat;border-radius:0;color:var(--lit-ink);filter:drop-shadow(0 0 8px color-mix(in srgb,var(--lit) 75%,transparent))}
-#win .ball.squad{line-height:1}
-#win .ball.squad .sc{position:absolute;left:0;right:0;bottom:4%;display:flex;flex-direction:column;align-items:center}
-#win .ball.squad .ico{position:absolute;left:50%;top:-14%;width:86%;height:86%;transform:translateX(-50%);object-fit:contain;pointer-events:none}
-#win .ball.squad .num{position:relative;font-weight:700;font-size:1.3em;color:#2a1d00;-webkit-text-stroke:5px #fff;paint-order:stroke fill;text-shadow:0 1px 3px rgba(0,0,0,.35)}
-#win .ball.squad small{position:relative;margin:1px 0 0;font-size:.62em;color:#2a1d00;-webkit-text-stroke:3px #fff;paint-order:stroke fill}
-#win .ball.fan{background:var(--fan);color:#fff;z-index:2}
-#win .ball.fan.lit{background:url(../img/orb-lit.svg) center/100% 100% no-repeat;border-radius:50%;color:var(--lit-ink);outline:3px solid var(--fan);outline-offset:2px}
-#win .ball.fan::after{content:"応援\Aチーム";white-space:pre;text-align:center;line-height:1.25;position:absolute;top:100%;margin-top:3px;font-family:var(--f-body);font-size:10px;font-weight:700;color:var(--fan-ink)}
-#win .fwrap{grid-column:2;grid-row:3;display:flex;justify-content:center}
+/* 計算機・スコア表のカードと「決勝スタート」をたてに並べる */
+#win .finals{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:22px;position:relative}
+#win .fwrap{display:flex;justify-content:center}
 #win .fpill{padding:12px 48px 14px;border:1px solid var(--node-line);border-radius:16px;font-weight:700;font-size:24px;letter-spacing:.14em;background:linear-gradient(180deg,var(--node-top),var(--node-bot));box-shadow:inset 0 1px 0 var(--node-hi),0 12px 28px -18px rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;line-height:1.3}
 #win .fpill span{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--muted)}
 
-#win .bubble{position:relative;background:var(--bub);border:1px solid var(--bub-line);border-radius:50% / 46%;padding:30px 22px;text-align:center;font-weight:700;font-size:17px;line-height:1.7;justify-self:end;max-width:250px}
-#win .bubble::after{content:"";position:absolute;right:-10px;top:42%;width:22px;height:22px;background:var(--bub);border-right:1px solid var(--bub-line);border-top:1px solid var(--bub-line);transform:rotate(45deg) skew(10deg,10deg)}
-#win .bubble .big{font-family:var(--f-num);font-size:26px}
-#win .bubble .b3{display:block;margin-top:8px;font-size:.88em}
-#win .bubble mark{background:var(--lit);color:var(--lit-ink);padding:0 6px;border-radius:6px}
 
 /* ---- 計算機とスコア表のカード（手札みたいに2枚を扇形に。座布団は1枚、乗せた方の名前を出す） ---- */
-#win .tools{--cw:74px;grid-column:3;grid-row:2;align-self:center;justify-self:start;margin-left:44px;display:flex;flex-direction:column;align-items:center;width:calc(var(--cw) * 2.7)}
+#win .tools{--cw:74px;display:flex;flex-direction:column;align-items:center;width:calc(var(--cw) * 3.3)}
 /* 開き具合 --o（0＝ほぼ重なって閉じる、1＝扇に開く）と、持ち上げ --up を数値として動かせるようにする */
 @property --o{syntax:"<number>";inherits:true;initial-value:1}
 @property --up{syntax:"<number>";inherits:false;initial-value:0}
@@ -88,18 +35,15 @@
 #win .card:hover,#win .card:focus-visible{z-index:3;--up:1}
 #win .card:active{scale:.96}
 #win .card:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
-#win .tlabel{width:100%;margin-top:calc(var(--cw) * -.42);padding:calc(var(--cw) * .5) 4px calc(var(--cw) * .26);background:url(../img/zabuton.svg) center/100% 100% no-repeat;position:relative;z-index:1;
+#win .tlabel{width:100%;margin-top:calc(var(--cw) * -.42);padding:calc(var(--cw) * .5) 4px calc(var(--cw) * .26);position:relative;z-index:1;isolation:isolate;
   color:#fff;font-weight:900;font-size:14px;line-height:1.2;text-align:center;-webkit-text-stroke:3px #1d1b3a;paint-order:stroke fill;min-height:2.4em;display:grid;place-items:center}
-#win .tlabel > span{grid-area:1/1}
-#win .l-table{visibility:hidden}
-#win .tools:has(.c-table:is(:hover,:focus-visible)) .l-table{visibility:visible}
-#win .tools:has(.c-table:is(:hover,:focus-visible)) .l-calc{visibility:hidden}
-/* マウスを乗せられない端末（スマホなど、タップで操作するとき）は、カードの下にそれぞれの名前を並べて出す */
-@media (hover:none){
-  #win .tools{width:calc(var(--cw) * 3.3)}
-  #win .tlabel{grid-template-columns:1fr 1fr;column-gap:4px;padding-inline:18px;font-size:14px !important}
-  #win .tlabel > span{grid-area:auto;visibility:visible !important}
-}
+/* 座布団は手描きの形（SVG）を「型」（mask）にして、中を --zab の色で塗る。色は --zab を変えるだけ
+   形はファイルにせずここに直接書く（ファイルを読む形だと、PCで index.html を直接開いたときに型が読めず透明になるため） */
+#win{--zab-shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 277.954 173.92' preserveAspectRatio='none'%3E%3Cpath transform='translate(-16.087 -1060.193)' d='M173.578 1060.708c-23.932 4.324-49.316 1.221-72.012 11.535-21.45 8.044-42.178 19.667-57.36 37.143-44.662 30.938-31.52 82.913 7.283 113.617 23.773 14.572 45.1 10.917 72.022 10.116 47.054-6.915 77.177-1.727 114.494-11.944 26.44-8.22 43.23-33.161 50.917-58.55 13.84-37.775-1.837-59.491-29.623-83.61-8.42-3.543-62.278-22.132-85.721-18.307'/%3E%3C/svg%3E")}
+#win .tlabel::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--zab,#393864);
+  -webkit-mask:var(--zab-shape) center/100% 100% no-repeat;mask:var(--zab-shape) center/100% 100% no-repeat}
+/* カードの下に、それぞれの名前を並べて出す */
+#win .tlabel{grid-template-columns:1fr 1fr;column-gap:4px;padding-inline:18px}
 
 /* ---- 押したら出てくる窓（PCは真ん中、スマホは下からせり上がる）。中の色は明暗どちらのテーマでも同じ ---- */
 #win .dlg{--d-bg1:#46447e;--d-bg2:#2e3352;--d-pan:#272538;--d-pan2:rgba(20,20,45,.35);--d-dd:#5a3cb8;--d-tri:#c9a8ff;--d-num:#f1ff88;
@@ -171,25 +115,8 @@
   #win .dlg[open]{animation:win-sheetUp .32s cubic-bezier(.2,.9,.3,1)}
   #win .dlg-in{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 }
-/* PC（横並びのとき）は真ん中の玉が隠れないよう、窓をアイコンの場所（右の列）に重ねて出す */
-@media (min-width:961px){
-  #win .dlg{position:absolute;inset:auto 0 auto auto;top:50%;translate:0 -50%;margin:0;z-index:30;width:min(360px,calc((100% - 320px) / 2 - 6px));max-height:none;transform-origin:85% 50%}
-  #win .dlg[open]{animation:win-dlgPop .24s cubic-bezier(.3,1.4,.5,1)}
-  #win .dlg-in{max-height:none;overflow:visible;padding:12px 14px 16px;gap:14px} #win .dlg .pane{gap:14px}
-  #win .dlg .score td{padding:6px}
-  #win .dlg .now,#win .dlg .need,#win .dlg .exl,#win .dlg .res{white-space:nowrap}
-  #win .dlg .now{font-size:14px;gap:8px}
-  #win .dlg .pin{width:80px;height:80px;margin-top:-46px;font-size:40px}
-  #win .dlg .pan1{margin-top:24px}
-  #win .dlg .need{font-size:15px;gap:6px;min-height:68px;padding:4px 12px}
-  #win .dlg .need .bn,#win .dlg .kills{font-size:44px}
-  #win .dlg .pan2{font-size:14px;gap:10px;padding:14px}
-  #win .dlg .exl{gap:8px}
-  #win .dlg .dd{padding:8px 34px 8px 14px;background-position:calc(100% - 18px) 55%,calc(100% - 12px) 55%}
-}
-/* 真ん中に出す窓（スマホ・タブレット）が開いている間は、後ろのページがスクロールしないように */
+/* 窓が開いている間は、後ろのページがスクロールしないように */
 :root:has(#win .dlg:modal){overflow:hidden}
-#win .cnote{position:absolute;left:50%;top:47%;transform:translate(-50%,-50%);z-index:1;padding:4px 2px;background:var(--surface);box-shadow:0 0 0 2px var(--surface);font-size:11px;line-height:1.4;color:var(--muted);text-align:center;white-space:nowrap}
 
 /* ---- Day 3 / グループ ---- */
 #win .divider{margin:22px -20px 0;padding-top:8px;padding-inline:20px;border-top:2px solid var(--sep)}
@@ -224,9 +151,108 @@
 #win .legend i{width:22px;height:4px;border-radius:2px}
 
 @media (max-width:960px){
-  #win .finals{grid-template-columns:minmax(0,1fr);justify-items:center;row-gap:20px}
-  #win .goal,#win .center,#win .bubble,#win .tools{grid-column:auto;grid-row:auto}
-  #win .goal{order:0;margin-bottom:0} #win .bubble{margin-right:0} #win .tools{margin-left:0} #win .goal svg{width:46px;height:37px} #win .cloud{max-width:100%} #win .center{order:1} #win .bubble{order:2;justify-self:center} #win .tools{order:3;justify-self:center;--cw:84px} #win .tlabel{font-size:17px}
-  #win .fwrap{grid-column:auto;grid-row:auto;order:4}
-  #win .bubble::after{right:auto;left:50%;top:-10px;transform:translateX(-50%) rotate(-45deg) skew(10deg,10deg)}
+  #win .tools{--cw:84px}
+}
+
+/* ---- マッチポイント形式って？（3チームの点数が伸びていくスライド）---- */
+#win .mpx{margin-top:14px}
+#win .mpx-h{margin:0 0 10px;font-size:17px;font-weight:900;text-align:center}
+#win .mpx-board{--mx-bg:#5b2bbd;--icon:52px;--dot:38px;position:relative;max-width:720px;margin:0 auto;padding:16px 18px 12px;border-radius:16px;background:var(--mx-bg);color:#fff;overflow:hidden;overflow:clip}
+#win .mpx-title{text-align:center;font-size:clamp(22px,4.4vw,32px);font-weight:900;letter-spacing:.04em;line-height:1.2;min-height:1.2em}
+#win .mpx-title.pop{animation:win-mxTitle .45s cubic-bezier(.3,1.5,.5,1)}
+@keyframes win-mxTitle{from{transform:translateY(8px) scale(.92);opacity:0}to{transform:none;opacity:1}}
+/* 左にチーム、右に点数の線。点数の線の上に 50pt の線とマッチポイントのゾーンを重ねる */
+#win .mpx-field{position:relative;padding-top:58px;margin-top:2px}
+#win .mpx-lane{position:absolute;top:0;bottom:0;left:calc(var(--icon) + 14px);right:calc(var(--dot) / 2)}
+#win .mpx-goal{--x:100%;position:absolute;left:var(--x);top:4px;bottom:4px;width:4px;translate:-50% 0;background:var(--lit);border-radius:2px;transition:left .9s cubic-bezier(.65,0,.35,1)}
+#win .mpx-goal b,#win .mpx-goal small{position:absolute;left:50%;translate:-50% 0;color:var(--lit-ink);font-family:var(--f-num);line-height:1}
+#win .mpx-goal::before{content:"";position:absolute;left:50%;top:0;width:50px;height:50px;translate:-50% 0;border-radius:50%;background:var(--lit)}
+#win .mpx-goal b{top:11px;font-size:22px;font-weight:800}
+#win .mpx-goal small{top:33px;font-size:10px;font-weight:700;translate:2px 0}
+/* CAT は猫の横顔の輪郭が見えるよう、名前を少し下に */
+#win .mpx-team.t-cat span{margin-top:-4px}
+/* 説明のフキダシ（スタートと最後の試合）。ボードの真ん中に、うしろを少し暗くして出す */
+#win .mpx-say{position:absolute;inset:-6px -8px;z-index:4;display:grid;place-items:center;border-radius:12px;background:rgba(20,10,45,.5);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+#win .mpx-say.show{opacity:1;visibility:visible;cursor:pointer}
+#win .mpx-say p{position:relative;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:#fff;color:#2a1360;font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+#win .mpx-say.show p{animation:win-mxSay .4s cubic-bezier(.3,1.5,.5,1)}
+/* タイトルとフキダシの数字は、試合ボタンと同じ数字用の書体に */
+#win .mpx-title .n,#win .mpx-say .n{font-family:var(--f-num)}
+/* 白いフキダシの上でも猫の白い横顔が見えるよう、アイコンに濃い色のフチ */
+#win .mpx-say .ico{width:1.4em;height:1.4em;vertical-align:-.35em;margin-right:2px;filter:url(#win-outline)}
+#win .mpx-say mark{background:var(--lit);color:var(--lit-ink);padding:0 5px;border-radius:5px}
+@keyframes win-mxSay{from{transform:translateY(10px) scale(.85);opacity:0}to{transform:none;opacity:1}}
+#win .mpx-rows{position:relative;display:flex;flex-direction:column;gap:14px}
+#win .mpx-row{display:grid;grid-template-columns:var(--icon) 1fr;column-gap:14px;align-items:center}
+#win .mpx-team{position:relative;display:flex;flex-direction:column;align-items:center}
+#win .mpx-team img{width:var(--icon);height:var(--icon);display:block}
+#win .mpx-team span{position:relative;margin-top:-10px;font-family:var(--f-num);font-size:11px;font-weight:800;letter-spacing:.04em;padding:0 3px;border-radius:3px;background:rgba(0,0,0,.35)}
+#win .mpx-track{position:relative;height:var(--dot);margin-right:calc(var(--dot) / 2);background:radial-gradient(circle,rgba(255,255,255,.85) 1.4px,transparent 1.6px) left center/14px 6px repeat-x}
+#win .mpx-track::before{content:"";position:absolute;left:-4px;top:50%;width:9px;height:9px;translate:0 -50%;border-radius:50%;background:#fff}
+#win .mpx-dot{--x:0%;position:absolute;left:var(--x);top:50%;translate:-50% -50%;width:var(--dot);height:var(--dot);border-radius:50%;background:#fff;color:#1b1630;display:grid;place-items:center;
+  font-family:var(--f-num);font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;z-index:2;transition:left .9s cubic-bezier(.65,0,.35,1),background .3s}
+#win .mpx-dot > i{font-style:normal;display:block}
+/* 50pt に届いた玉は、オーラをくり返し放つ（止めていても続く） */
+#win .mpx-dot.lit{background:var(--lit);color:var(--lit-ink);animation:win-mxLit 1.3s .8s infinite}
+@keyframes win-mxLit{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--lit) 75%,transparent),0 0 6px var(--lit)}70%{box-shadow:0 0 0 16px transparent,0 0 18px var(--lit)}100%{box-shadow:0 0 0 16px transparent,0 0 6px var(--lit)}}
+/* 点が入ったとき：数字がぽんっとはねて、玉のまわりに輪が広がる */
+#win .mpx-dot.hit > i{animation:win-mxHit .5s cubic-bezier(.3,1.6,.5,1)}
+@keyframes win-mxHit{0%{scale:1}40%{scale:1.35}100%{scale:1}}
+#win .mpx-dot.hit::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #d9ff7a;animation:win-mxRing .7s ease-out both;pointer-events:none}
+@keyframes win-mxRing{from{opacity:1;scale:1}to{opacity:0;scale:1.7}}
+/* +12 みたいな加点のエフェクト */
+#win .mpx-gain{position:absolute;left:50%;bottom:calc(100% + 2px);translate:-50% 0;z-index:3;font-family:var(--f-num);font-size:21px;font-weight:900;color:#d9ff7a;-webkit-text-stroke:4px #2a1360;paint-order:stroke fill;pointer-events:none;
+  animation:win-mxGain 2.1s cubic-bezier(.2,.8,.3,1) both}
+/* 加点の内訳（順位 + キル）。玉の右に小さく */
+#win .mpx-why{position:absolute;left:calc(100% + 6px);top:50%;translate:0 -50%;z-index:3;padding:2px 8px;border-radius:999px;background:rgba(20,10,45,.75);color:#fff;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;animation:win-mxWhy 2.1s ease both}
+#win .mpx-gain.stay{animation:win-mxGainIn .5s cubic-bezier(.2,.8,.3,1) both}
+#win .mpx-why.stay{animation:win-mxWhyIn .4s ease both}
+#win .mpx-why.champ{background:var(--lit);color:var(--lit-ink)}
+/* 右はしに近い玉は、内訳を左に出してはみ出さないように */
+#win .mpx-why.left{left:auto;right:calc(100% + 6px)}
+/* 優勝したチーム：行がふわっと光って、アイコンに王冠 */
+#win .mpx-row{position:relative}
+#win .mpx-row.win::before{content:"";position:absolute;inset:-6px -8px;z-index:0;border-radius:14px;background:color-mix(in srgb,var(--lit) 22%,transparent);box-shadow:0 0 0 2px var(--lit);animation:win-mxWin .5s .5s both}
+#win .mpx-row > *{position:relative;z-index:1}
+#win .mpx-row.win .mpx-team::after{content:"";position:absolute;left:50%;top:-22px;width:30px;height:24px;translate:-50% 0;background:var(--lit);
+  clip-path:polygon(4% 92%,10% 22%,32% 52%,50% 8%,68% 52%,90% 22%,96% 92%);animation:win-mxCrown .6s .7s cubic-bezier(.3,1.6,.5,1) both}
+@keyframes win-mxWin{from{opacity:0;scale:.96}to{opacity:1;scale:1}}
+@keyframes win-mxCrown{from{opacity:0;transform:translateY(-18px) rotate(-14deg)}to{opacity:1;transform:none}}
+@keyframes win-mxGainIn{0%{opacity:0;transform:translateY(8px) scale(.6)}60%{opacity:1;transform:translateY(-6px) scale(1.15)}100%{opacity:1;transform:translateY(-4px)}}
+@keyframes win-mxWhyIn{from{opacity:0;transform:translateX(-6px)}to{opacity:1;transform:none}}
+@keyframes win-mxWhy{0%{opacity:0;transform:translateX(-6px)}12%,78%{opacity:1;transform:none}100%{opacity:0}}
+@keyframes win-mxGain{0%{opacity:0;transform:translateY(8px) scale(.6)}12%{opacity:1;transform:translateY(-4px) scale(1.15)}78%{opacity:1;transform:translateY(-12px) scale(1)}100%{opacity:0;transform:translateY(-20px)}}
+/* 下の操作（試合の点・ボタン） */
+#win .mpx-ctrl{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px}
+/* 試合ボタンは串（だんご）の形。串の中を、進み具合に合わせて明るい色が満ちていく（ローディングバーのように） */
+@property --mxp{syntax:"<length>";inherits:false;initial-value:0px}
+#win .mpx-dots{--d:24px;--g:10px;position:relative;display:flex;gap:var(--g)}
+#win .mpx-bar{position:absolute;inset:0;z-index:0;pointer-events:none;--mxp:0px;background:linear-gradient(90deg,#d6c4ec var(--mxp),rgba(255,255,255,.16) var(--mxp))}
+#win .mpx-dots button{position:relative;z-index:1;width:var(--d);height:var(--d);padding:0;border:0;border-radius:50%;background:none;color:#fff;font-family:var(--f-num);font-size:11px;font-weight:800;cursor:pointer}
+#win .mpx-dots button.done{color:#1b1630}
+#win .mpx-dots button:hover{box-shadow:0 0 0 2px #fff}
+#win .mpx-btns{display:flex;gap:6px}
+#win .mpx-b{width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:10px;background:rgba(255,255,255,.16);cursor:pointer}
+#win .mpx-b:hover{background:rgba(255,255,255,.28)}
+#win .mpx-b svg{width:16px;height:16px;fill:#fff;stroke:#fff}
+#win .mpx-b svg path:not([fill]){stroke:none}
+#win .mpx-b .i-play{display:none}
+#win .mpx-board.paused .mpx-b .i-play{display:inline} #win .mpx-board.paused .mpx-b .i-pause{display:none}
+#win .mpx-credit{margin:10px 0 0;font-size:10px;color:rgba(255,255,255,.7);text-align:right;opacity:0;transition:opacity .6s}
+#win .mpx-credit a{color:inherit}
+#win .mpx-board.end .mpx-credit{opacity:1}
+/* 優勝の紙ふぶき（canvas）。ボードいっぱいに重ねて、クリックは下に通す */
+#win .mpx-fx{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
+/* 始まる前は、ボードの上にスタートボタン */
+#win .mpx-start{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:10px;border:0;background:rgba(20,10,45,.55);color:#fff;font:inherit;font-size:20px;font-weight:900;cursor:pointer;transition:opacity .3s,visibility .3s}
+#win .mpx-start span{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:var(--lit);color:var(--lit-ink);font-size:22px;padding-left:4px}
+#win .mpx-start:hover span{filter:brightness(1.08)}
+#win .mpx-board.started .mpx-start{opacity:0;visibility:hidden}
+@media (max-width:600px){
+  #win .mpx-board{--icon:42px;--dot:32px;padding:14px 12px 10px}
+  #win .mpx-dot{font-size:14px}
+  #win .mpx-gain{font-size:15px} #win .mpx-why{font-size:10px;padding:1px 6px}
+  #win .mpx-dots{--d:20px;--g:6px} #win .mpx-dots button{font-size:10px}
+  #win .mpx-ctrl{flex-wrap:wrap;justify-content:center;row-gap:8px}
+  #win .mpx-b{width:30px;height:30px}
 }

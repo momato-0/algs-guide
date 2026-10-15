@@ -23,5 +23,5 @@ ALGS をはじめて観る人のための、ファンが作った非公式ガイ
 
 ## 素材のクレジット
 
-- チームアイコン：オリジナル（3人のシルエット、img/team-a.svg・team-b.svg）
+- マッチポイント形式のスライドのアイコン（img/team-apple.png・team-beer.png・team-cat.png）：Flaticon（Magnific）。クレジットはスライドの最後に表示
 - 「チャンピオン」の文字：haramasenyanko by Haru Inatsuka（アウトライン化して `index.html` に埋め込み）

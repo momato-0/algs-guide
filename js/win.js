@@ -1,35 +1,8 @@
-/* セクション1「どうなったら勝ち？」の動き（決勝の玉・マッチポイント計算機・矢印の位置合わせ・アイコンから開く窓） */
+/* セクション1「どうなったら勝ち？」の動き（マッチポイント計算機・矢印の位置合わせ・カードから開く窓・マッチポイント形式のスライド） */
 (function(){
 const $ = id => document.getElementById(id);
 const PLACE = [12,9,7,5,4,3,3,2,2,2,1,1,1,1,1,0,0,0,0,0];
 const MP = 50;
-
-/* 決勝の玉：架空の例。位置は雲の中の % */
-const BALLS = [
-  {v:65,x:70,squad:"fist"},{v:50,x:28,squad:"dragon"},{v:44,x:80},{v:46,x:16},
-  {v:39,x:34},{v:24,x:60},{v:19,x:14},{v:12,x:78},{v:7,x:34}
-];
-const FAN_X = 94;
-// 点数 → 縦位置（%）。50pt の点線（MP_LINE）をはさんで、点灯している玉は上、まだの玉は下に分ける
-// 0pt=96%、30pt=70%、49pt=50% ／ 50pt=26%、65pt=12%
-const MP_LINE = 38;
-const yOf = v => Math.max(4, v >= MP ? 26 - (v-MP)*(14/15) : v <= 30 ? 96 - v*(26/30) : 70 - (v-30)*(20/19));
-const cloud = $("win-cloud");
-$("win-mpline").style.top = MP_LINE + "%";
-const size = v => 30 + Math.min(v,70) * .42;
-// チームのアイコン（3人のシルエット）
-const ICONS = {fist:"img/team-a.svg", dragon:"img/team-b.svg"};
-function mk(v, x, y, cls, squad){
-  const b = document.createElement("div");
-  b.className = "ball" + (cls ? " " + cls : "") + (v >= MP ? " lit" : "") + (squad ? " squad" : "");
-  const s = size(v) + (squad ? 20 : 0);
-  if(squad) y = Math.max(y, 15);
-  Object.assign(b.style, {left:x+"%", top:y+"%", width:s+"px", height:s+"px", fontSize:(11 + s*.12)+"px"});
-  b.innerHTML = squad ? `<img class="ico" src="${ICONS[squad]}" alt=""><span class="sc"><span class="num">${v}</span><small>pt</small></span>` : `${v}<small>pt</small>`;
-  cloud.appendChild(b); return b;
-}
-BALLS.forEach(b=>mk(b.v,b.x,yOf(b.v),"",b.squad));
-const fanBall = mk(32, FAN_X, yOf(32), "fan");
 
 /* 計算 */
 let pts = 32, nTouched = false;
@@ -50,11 +23,6 @@ function draw(){
   $("win-c-range").value = pts;
   const lit = pts >= MP, need = MP - pts;
   const pin = $("win-c-pin"); pin.textContent = pts; pin.classList.toggle("lit", lit);
-  // 玉
-  const s = size(pts);
-  fanBall.classList.toggle("lit", lit);
-  Object.assign(fanBall.style, {width:s+"px", height:s+"px", fontSize:(11 + s*.12)+"px", top:yOf(pts)+"%"});
-  fanBall.innerHTML = `${pts}<small>pt</small>`;
   // あと何点
   const nd = $("win-c-need");
   nd.classList.toggle("done", lit);
@@ -100,24 +68,8 @@ function linkFinals(){
 linkFinals();
 addEventListener("resize", linkFinals);
 
-const bubble = document.querySelector("#win .bubble"), mpline = $("win-mpline"), tools = document.querySelector("#win .tools");
-function alignBubble(){
-  bubble.style.translate = tools.style.translate = ""; mpline.style.left = "";
-  if(!matchMedia("(min-width:961px)").matches) return;
-  const ly = mpline.getBoundingClientRect().top, b = bubble.getBoundingClientRect(), t = tools.getBoundingClientRect();
-  // 口（::after）は上から 42% のところ。その中心が点線に来るように上下にずらす
-  const dy = Math.round(ly - (b.top + b.height * .42 + 11));
-  bubble.style.translate = `0 ${dy}px`;
-  // 右のカード（計算機・スコア表）も、フキダシと同じ高さ（真ん中どうし）にそろえる
-  tools.style.translate = `0 ${Math.round(b.top + dy + b.height / 2 - (t.top + t.height / 2))}px`;
-  mpline.style.left = Math.round(b.right + 16 - cloud.getBoundingClientRect().left) + "px";
-}
-alignBubble();
-addEventListener("resize", alignBubble);
 
-/* アイコンから開く窓（上のタブで計算機とスコア表を切りかえ）。×・窓の外・Esc で閉じる
-   PC は右の列に重ねて出す（後ろの玉が見えるように）、それ以外は真ん中／下から */
-const wide = matchMedia("(min-width:961px)");
+/* カードから開く窓（上のタブで計算機とスコア表を切りかえ）。×・窓の外・Esc で閉じる。PC は真ん中、スマホは下から */
 const dlg = $("win-dlg");
 function setTab(name){
   ["calc","table"].forEach(t => {
@@ -127,14 +79,11 @@ function setTab(name){
 }
 document.querySelectorAll("#win [data-tab]").forEach(b => b.addEventListener("click", e => {
   e.stopPropagation(); setTab(b.dataset.tab);
-  if(!dlg.open) wide.matches ? dlg.show() : dlg.showModal();
+  if(!dlg.open) dlg.showModal();
 }));
 ["calc","table"].forEach(t => $("win-tab-" + t).addEventListener("click", () => setTab(t)));
 dlg.addEventListener("click", e => { if(e.target === dlg || e.target.closest("[data-close]")) dlg.close(); });
-document.addEventListener("click", e => { if(wide.matches && dlg.open && !e.target.closest("#win .dlg")) dlg.close(); });
-document.addEventListener("keydown", e => { if(e.key === "Escape" && dlg.open) dlg.close(); });
-wide.addEventListener("change", () => dlg.open && dlg.close());
-if(document.fonts) document.fonts.ready.then(() => { linkFinals(); alignBubble(); });
+if(document.fonts) document.fonts.ready.then(linkFinals);
 /* DAY 3 から下の折りたたみ */
 const fold = $("win-fold"), foldBtn = $("win-fold-btn");
 function setFold(on){
@@ -145,5 +94,223 @@ function setFold(on){
 }
 fold.querySelector(".fold-head").addEventListener("click", () => setFold(!fold.classList.contains("open")));
 $("win-fold-btn2").addEventListener("click", () => setFold(false));
-if(window.ResizeObserver) new ResizeObserver(() => { linkFinals(); alignBubble(); }).observe(document.querySelector("#win .sheet"));
+if(window.ResizeObserver) new ResizeObserver(linkFinals).observe(document.querySelector("#win .sheet"));
+/* マッチポイント形式のスライド：0pt から8試合。6試合目で2チーム点灯、7・8試合目で CAT が連続チャンピオンの逆転優勝。
+   基本は自動で進み、一時停止・試合ボタンで好きな試合・最初からもできる */
+(() => {
+  const TEAMS = [
+    {id:"apple", name:"APPLE", img:"img/team-apple.png"},
+    {id:"beer",  name:"BEER",  img:"img/team-beer.png"},
+    {id:"cat",   name:"CAT",   img:"img/team-cat.png"}
+  ];
+  // [スタート, 1試合目, …, 8試合目]
+  const SCORES = [
+    [0,19,34,35,41,43,50,57,62],
+    [0, 0, 4, 5,26,45,65,84,99],
+    [0, 1, 2,21,29,38,48,70,95]
+  ];
+  // 各試合の内訳 [順位, キル数]（順位ポイントは PLACE、1キル1pt）
+  const DETAIL = [
+    [[1,7],[4,10],[15,0],[9,4],[15,1],[5,3],[5,3],[6,2]],
+    [[17,0],[8,2],[20,1],[1,9],[2,10],[3,13],[2,10],[3,8]],
+    [[14,0],[16,1],[1,7],[4,3],[5,5],[4,5],[1,10],[1,13]]
+  ];
+  // 点灯した試合と、優勝が決まる試合（CAT は点灯前の7試合目にチャンピオン、点灯後の8試合目にもう一度チャンピオンで優勝）
+  const WINNER = 2;
+  const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const LAST = SCORES[0].length - 1, STEP_MS = 2300;
+  // 説明のフキダシ（[出すまでの待ち時間 ms, 文]）
+  const CAT = '<img class="ico" src="img/team-cat.png" alt="">';
+  const SAY = {
+    0: [300, "まずは<mark><span class=\"n\">50</span>pt</mark>を稼いで<br>マッチポイント点灯を<br>目指せ！"],
+    6: [3200, "<span class=\"n\">2</span>チーム点灯！<br>どちらかがチャンピオンを<br>とれば優勝だ"],
+    7: [2000, `おっと<br>${CAT}CAT がチャンピオン！`, `この試合で点灯したから<br>優勝はまだ決まらない`, `これで<span class=\"n\">3</span>チーム点灯<br>次の試合で決まるか？`],
+    8: [2600, `なんと ${CAT}CATが<br>連続チャンピオン！`, `文句なしの優勝だ！`]
+  };
+  const say = $("win-mpx-say");
+  // フキダシを押すと閉じて、うしろの玉が見える
+  say.addEventListener("click", () => say.classList.remove("show"));
+  let sayTimer = 0;
+  // 1つの試合にフキダシが2つ以上あるときは、読み終わったら消して次を出す
+  const SAY_GAP = 400;
+  const readOne = html => Math.max(3400, html.replace(/<[^>]*>/g, "").length * 200);
+  function setSay(i, animate){
+    clearTimeout(sayTimer); say.classList.remove("show"); stopFx();
+    if(!SAY[i]) return;
+    const [wait, ...texts] = SAY[i];
+    const part = k => {
+      // 文は出す直前に入れかえる（先に入れると、前のフキダシが消えていく途中に次の文が見えてしまう）
+      say.querySelector("p").innerHTML = texts[k]; say.classList.add("show");
+      // 最後の試合の、最後のフキダシ（「文句なしの優勝だ！」）が出たら紙ふぶき
+      if(i === LAST && k === texts.length - 1 && animate) startFx();
+      if(k + 1 < texts.length) sayTimer = setTimeout(() => { say.classList.remove("show"); sayTimer = setTimeout(() => part(k + 1), SAY_GAP); }, readOne(texts[k]));
+    };
+    sayTimer = setTimeout(() => part(0), animate && !reduce ? wait : 0);
+  }
+  // 目盛り（線の右はしが何点か）。最初は 50pt が右から 1/4 のところ。
+  // 4試合目に入るとき、玉と 50pt の線の位置関係はそのままで、全体をぎゅっと左へ縮める（50pt が真ん中に来る）
+  const WIDE_FROM = 4, RESCALE_MS = 1000;
+  const span = i => i >= WIDE_FROM ? MP * 2 : MP / .75;
+  const board = $("win-mpx-board"), rowsEl = $("win-mpx-rows"), title = $("win-mpx-title"), goal = $("win-mpx-goal"), dotsEl = $("win-mpx-dots");
+  const rows = TEAMS.map(t => {
+    const r = document.createElement("div"); r.className = "mpx-row";
+    r.innerHTML = `<div class="mpx-team t-${t.id}"><img src="${t.img}" alt=""><span>${t.name}</span></div><div class="mpx-track"><div class="mpx-dot"><i>0</i></div></div>`;
+    rowsEl.appendChild(r);
+    return {row:r, dot:r.querySelector(".mpx-dot"), num:r.querySelector(".mpx-dot i"), shown:0};
+  });
+  rowsEl.setAttribute("aria-hidden", "true");
+  const bar = document.createElement("div"); bar.className = "mpx-bar"; dotsEl.appendChild(bar);
+  const dots = SCORES[0].map((_, i) => {
+    const b = document.createElement("button"); b.type = "button";
+    b.textContent = i === 0 ? "S" : i; b.setAttribute("aria-label", i === 0 ? "決勝スタート" : i + "試合目");
+    b.addEventListener("click", () => { pause(); show(i); });
+    dotsEl.appendChild(b); return b;
+  });
+  // 数字をカウントアップさせる
+  function count(row, to){
+    const from = row.shown; row.shown = to;
+    if(reduce || from === to){ row.num.textContent = to; return; }
+    const t0 = performance.now(), d = 800;
+    const tick = now => { const k = Math.min(1, (now - t0) / d); row.num.textContent = Math.round(from + (to - from) * (1 - (1 - k) ** 3)); if(k < 1) requestAnimationFrame(tick); };
+    requestAnimationFrame(tick);
+  }
+  const pos = (v, max) => Math.min(v, max) / max * 100 + "%";
+  // 目盛りを合わせる（50pt の線）
+  function setScale(max){
+    goal.style.setProperty("--x", pos(MP, max));
+    rows.forEach((r, k) => r.dot.style.setProperty("--x", pos(r.shown, max)));
+  }
+  // 点数を動かす（gain があるときは白い玉に「+12」を出して、玉もぽんっとはねる）
+  function setScores(i, prev, animate){
+    const max = span(i);
+    rows.forEach((r, k) => {
+      const v = SCORES[k][i], gain = i > 0 ? v - SCORES[k][i - 1] : 0;
+      r.dot.style.setProperty("--x", pos(v, max));
+      r.dot.classList.toggle("lit", v >= MP);
+      count(r, v);
+      r.dot.querySelectorAll(".mpx-gain,.mpx-why").forEach(e => e.remove());
+      // 0pt の試合も「+0」と内訳を出す（順位とキルの記録はあるので）
+      if(animate && i > 0){
+        // その試合の加点「+12」と内訳（例：2位 3キル）。自動再生中は消えていく。
+        // 止めて見ているとき（試合ボタン・一時停止）と最後の試合は、そのまま残す
+        const stay = !playing || i === LAST;
+        const g = document.createElement("span"); g.className = "mpx-gain" + (stay ? " stay" : ""); g.textContent = "+" + gain;
+        const [place, kills] = DETAIL[k][i - 1];
+        const d = document.createElement("span"); d.className = "mpx-why" + (stay ? " stay" : "") + (place === 1 ? " champ" : "") + (v / max > .6 ? " left" : ""); d.textContent = place === 1 ? `チャンピオン ${kills}キル` : `${place}位 ${kills}キル`;
+        r.dot.append(g, d);
+        if(!stay) setTimeout(() => { g.remove(); d.remove(); }, 2200);
+        r.dot.classList.remove("hit"); void r.dot.offsetWidth; if(gain > 0) r.dot.classList.add("hit");
+      }
+    });
+    board.classList.toggle("end", i === LAST);
+    // 優勝：CAT の行が光って、王冠が落ちてくる
+    rows.forEach((r, k) => r.row.classList.toggle("win", i === LAST && k === WINNER));
+  }
+  // 串の形（丸と、丸どうしをつなぐ棒）をマスクで作る。画面幅でボタンの大きさが変わるので、そのたびに作り直す
+  function shapeBar(){
+    const d = dots[0].offsetWidth, r = d / 2, x0 = dots[0].offsetLeft + r, x1 = dots[LAST].offsetLeft + r;
+    const m = dots.map(b => `radial-gradient(circle at ${b.offsetLeft + r}px 50%,#000 ${r}px,transparent ${r + .6}px)`);
+    m.push(`linear-gradient(#000,#000) ${x0}px 50%/${x1 - x0}px ${Math.round(d * .42)}px no-repeat`);
+    bar.style.webkitMask = bar.style.mask = m.join(",");
+  }
+  // 進み具合：i 番目の丸まで満たす。ms を渡すと、そこから次の丸までその時間をかけて満ちていく
+  const fillTo = i => dots[i].offsetLeft + dots[i].offsetWidth + "px";
+  function setProg(i, ms){
+    bar.style.transition = "none"; bar.style.setProperty("--mxp", fillTo(i)); void bar.offsetWidth;
+    if(ms && i < LAST && !reduce){ bar.style.transition = `--mxp ${ms}ms linear`; bar.style.setProperty("--mxp", fillTo(i + 1)); }
+  }
+  // 止めたときは、満ちている途中でそのまま止める
+  function freezeProg(){
+    const v = getComputedStyle(bar).getPropertyValue("--mxp");
+    bar.style.transition = "none"; bar.style.setProperty("--mxp", v);
+  }
+  shapeBar(); addEventListener("resize", () => { shapeBar(); setProg(step); });
+  let step = 0, timer = 0, wait = 0, playing = false;
+  /* 優勝の紙ふぶき：金と銀の紙が、くるくる裏返りながらボードの上からゆっくり舞い落ちる（canvas） */
+  const FX_COLORS = ["#f9e7c3", "#e3b458", "#9d7d1d", "#f4f6f9", "#c9ced6", "#8e959f"];
+  let fx = null;
+  function startFx(){
+    stopFx();
+    if(reduce) return;
+    const cv = document.createElement("canvas"); cv.className = "mpx-fx"; cv.setAttribute("aria-hidden", "true");
+    board.appendChild(cv);
+    const dpr = Math.min(2, devicePixelRatio || 1), W = board.clientWidth, H = board.clientHeight;
+    cv.width = W * dpr; cv.height = H * dpr;
+    const ctx = cv.getContext("2d"); ctx.scale(dpr, dpr);
+    const rnd = (a, b) => a + Math.random() * (b - a);
+    // 1秒あたりに足す紙の数（幅に合わせる）。最後の画面を出しているあいだ、ずっと降り続ける
+    const parts = [], RATE = W * .022;
+    let last = performance.now(), acc = 0;
+    const add = () => parts.push({x:rnd(-10, W + 10), y:rnd(-30, -8), vx:rnd(-.25, .25), vy:rnd(.55, 1.05), size:rnd(5, 8),
+      deg:rnd(0, 360), spin:rnd(.6, 1.4), sway:rnd(.3, .8), color:FX_COLORS[parts.length % FX_COLORS.length]});
+    const tick = now => {
+      const dt = Math.min(3, (now - last) / 16.7); last = now;
+      acc += RATE * dt * 16.7 / 1000;
+      while(acc >= 1){ add(); acc--; }
+      ctx.clearRect(0, 0, W, H);
+      for(let n = parts.length - 1; n >= 0; n--){
+        const q = parts[n];
+        q.deg += q.spin * dt;
+        q.x += (q.vx + Math.cos(q.deg * Math.PI / 180) * q.sway) * dt;
+        q.y += q.vy * dt;
+        if(q.y > H + 20){ parts.splice(n, 1); continue; }
+        // 縦の長さを cos で伸び縮みさせて、裏返るように見せる
+        const h = Math.cos(q.deg * Math.PI / 36) * q.size;
+        ctx.fillStyle = q.color;
+        ctx.beginPath();
+        ctx.moveTo(q.x, q.y); ctx.lineTo(q.x + q.size / 2, q.y + h); ctx.lineTo(q.x + q.size * 1.5, q.y + h); ctx.lineTo(q.x + q.size, q.y);
+        ctx.closePath(); ctx.fill();
+      }
+      fx.raf = requestAnimationFrame(tick);
+    };
+    fx = {cv, raf:requestAnimationFrame(tick)};
+  }
+  function stopFx(){
+    if(!fx) return;
+    cancelAnimationFrame(fx.raf); fx.cv.remove(); fx = null;
+  }
+  function show(i, animate = true){
+    const prev = step; step = i;
+    clearTimeout(wait);
+    title.innerHTML = i === 0 ? "決勝スタート" : `<span class="n">${i}</span>試合目`;
+    if(animate){ title.classList.remove("pop"); void title.offsetWidth; title.classList.add("pop"); }
+    dots.forEach(d => d.removeAttribute("aria-current")); dots[i].setAttribute("aria-current", "step");
+    setProg(i);
+    dots.forEach((d, k) => d.classList.toggle("done", k <= i));
+    setSay(i, animate);
+    if(animate && !reduce && i === WIDE_FROM && prev === WIDE_FROM - 1){
+      // ① 今の点数のまま、目盛りだけ広げる（全体が左へスライド）→ ② それから点数を足す
+      board.classList.remove("end");
+      setScale(span(i));
+      wait = setTimeout(() => setScores(i, prev, true), RESCALE_MS);
+    } else {
+      setScale(span(i));
+      setScores(i, prev, animate);
+    }
+    if(i === LAST) pause();
+  }
+  // 自動再生で次へ進むまでの時間。フキダシのある試合は読む時間をとる
+  // フキダシのある試合は、出てから読み終わるまで待つ（文字数に合わせて、1文字 0.2 秒・最低 3.4 秒）
+  const readMs = i => SAY[i].slice(1).reduce((t, h) => t + readOne(h) + SAY_GAP, -SAY_GAP);
+  const delay = i => i === WIDE_FROM ? STEP_MS + RESCALE_MS : SAY[i] ? SAY[i][0] + readMs(i) : STEP_MS;
+  function next(){ if(step < LAST){ show(step + 1); if(playing) wait2(delay(step)); } }
+  // 次へ進むまでの待ち時間と、串が満ちていく時間をそろえる
+  function wait2(ms){ clearTimeout(timer); timer = setTimeout(next, ms); setProg(step, ms); }
+  function play(){
+    if(step === LAST) show(0, false);
+    playing = true; board.classList.remove("paused"); $("win-mpx-pause").setAttribute("aria-label", "一時停止");
+    wait2(delay(step));
+  }
+  function pause(){
+    playing = false; clearTimeout(timer); freezeProg(); board.classList.add("paused"); $("win-mpx-pause").setAttribute("aria-label", "再生");
+  }
+  $("win-mpx-start").addEventListener("click", () => {
+    board.classList.add("started");
+    setSay(0, true);
+    if(!reduce) play();
+  });
+  $("win-mpx-pause").addEventListener("click", () => playing ? pause() : play());
+  $("win-mpx-replay").addEventListener("click", () => { show(0, true); play(); });
+  show(0, false); setSay(-1); pause();
+})();
 })();
