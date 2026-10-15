@@ -156,7 +156,7 @@
 
 /* ---- マッチポイント形式って？（3チームの点数が伸びていくスライド）---- */
 #win .mpx{margin-top:14px}
-#win .mpx-h{margin:0 0 10px;font-size:17px;font-weight:900;text-align:center}
+#win .mpx-h{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
 #win .mpx-board{--mx-bg:#5b2bbd;--icon:52px;--dot:38px;position:relative;max-width:720px;margin:0 auto;padding:16px 18px 12px;border-radius:16px;background:var(--mx-bg);color:#fff;overflow:hidden;overflow:clip}
 #win .mpx-title{text-align:center;font-size:clamp(22px,4.4vw,32px);font-weight:900;letter-spacing:.04em;line-height:1.2;min-height:1.2em}
 #win .mpx-title.pop{animation:win-mxTitle .45s cubic-bezier(.3,1.5,.5,1)}
@@ -244,11 +244,32 @@
 /* 優勝の紙ふぶき（canvas）。ボードいっぱいに重ねて、クリックは下に通す */
 #win .mpx-fx{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
 /* 始まる前は、ボードの上にスタートボタン */
-#win .mpx-start{position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:10px;border:0;background:rgba(20,10,45,.55);color:#fff;font:inherit;font-size:20px;font-weight:900;cursor:pointer;transition:opacity .3s,visibility .3s}
-#win .mpx-start span{width:56px;height:56px;display:grid;place-items:center;border-radius:50%;background:var(--lit);color:var(--lit-ink);font-size:22px;padding-left:4px}
-#win .mpx-start:hover span{filter:brightness(1.08)}
+#win .mpx-start{--k:1;position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:clamp(18px,5vw,56px);padding:16px;border:0;border-radius:inherit;
+  background:rgba(40,16,90,.38);-webkit-backdrop-filter:blur(7px) saturate(1.15);backdrop-filter:blur(7px) saturate(1.15);color:#fff;font:inherit;cursor:pointer;transition:opacity .3s,visibility .3s}
 #win .mpx-board.started .mpx-start{opacity:0;visibility:hidden}
+/* タイトル（haramasenyanko のSVG）。--k は SVG 1単位あたりの大きさ。4つとも同じ文字サイズで書き出してあるので、同じ倍率で並べる */
+#win .mpx-st-title{order:2;display:flex;flex-direction:column;align-items:flex-start;rotate:-8deg;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35))}
+#win .mpx-st-title img{display:block;width:auto}
+#win .mpx-st-title .ln1{display:flex;align-items:flex-end;gap:calc(4px * var(--k))}
+#win .mpx-st-title .w1{height:calc(61.4px * var(--k))}
+#win .mpx-st-title .w2{height:calc(62.08px * var(--k))}
+#win .mpx-st-title .w3{height:calc(80.76px * var(--k));margin:calc(-4px * var(--k)) 0 0 calc(200px * var(--k))}
+#win .mpx-st-title .w4{height:calc(44.61px * var(--k));margin:calc(4px * var(--k)) 0 0 calc(350px * var(--k))}
+/* ピンクの再生ボタン。ゆっくり脈打って「押してね」 */
+#win .mpx-st-play{order:1;position:relative;flex:none;width:calc(84px * var(--k));height:calc(84px * var(--k));border-radius:50%;background:#f50c76;box-shadow:0 6px 18px -6px rgba(0,0,0,.5);transition:scale .2s cubic-bezier(.3,1.6,.5,1)}
+#win .mpx-st-play::before{content:"";position:absolute;left:54%;top:50%;translate:-50% -50%;width:34%;height:40%;background:#111;clip-path:polygon(0 0,100% 50%,0 100%)}
+#win .mpx-st-play::after{content:"";position:absolute;inset:0;border-radius:50%;border:3px solid #f50c76;animation:win-mxPulse 1.8s ease-out infinite}
+@keyframes win-mxPulse{0%{opacity:.9;scale:1}100%{opacity:0;scale:1.55}}
+#win .mpx-start:hover .mpx-st-play{scale:1.08}
+#win .mpx-start:focus-visible{outline:3px solid #fff;outline-offset:-6px}
 @media (max-width:600px){
+  #win .mpx-start{--k:.62;flex-direction:column}
+  #win .mpx-st-title{order:1;rotate:-6deg}
+  #win .mpx-st-title .ln1{flex-direction:column;align-items:flex-start;gap:0}
+  #win .mpx-st-title .w2{margin-left:calc(60px * var(--k))}
+  #win .mpx-st-title .w3{margin:0 0 0 calc(150px * var(--k))}
+  #win .mpx-st-title .w4{margin:calc(10px * var(--k)) 0 0 calc(190px * var(--k))}
+  #win .mpx-st-play{order:2}
   #win .mpx-board{--icon:42px;--dot:32px;padding:14px 12px 10px}
   #win .mpx-dot{font-size:14px}
   #win .mpx-gain{font-size:15px} #win .mpx-why{font-size:10px;padding:1px 6px}

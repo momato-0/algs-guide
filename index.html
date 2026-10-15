@@ -49,7 +49,7 @@
         <div class="day">DAY 4 ・ 決勝</div>
         <!-- マッチポイント形式って？：3チームの点数が試合ごとに伸びていくスライド（動き：js/win.js の「マッチポイント形式のスライド」） -->
         <section class="mpx" id="win-mpx" aria-labelledby="win-mpx-h">
-          <h3 class="mpx-h" id="win-mpx-h">マッチポイント形式って？</h3>
+          <h3 class="mpx-h" id="win-mpx-h">マッチポイント形式とは？</h3>
           <div class="mpx-board" id="win-mpx-board">
             <div class="mpx-title" id="win-mpx-title" aria-live="polite">決勝スタート</div>
             <div class="mpx-field">
@@ -71,7 +71,11 @@
               </div>
             </div>
             <p class="mpx-credit" id="win-mpx-credit">thanks to：<a href="https://www.flaticon.com/free-icon/apple_2046393" title="Apple free icon" target="_blank" rel="noopener">apple</a>, <a href="https://www.flaticon.com/free-icon/beer_14112679" title="Beer free icon" target="_blank" rel="noopener">beer</a>, <a href="https://www.flaticon.com/free-icon/cat_2560492" title="Cat free icon" target="_blank" rel="noopener">cat</a> icons created by Magnific - Flaticon</p>
-            <button type="button" class="mpx-start" id="win-mpx-start"><span>▶</span>スタート</button>
+            <!-- スタート画面：うしろのボードを曇りガラスのようにぼかして、タイトルとピンクの再生ボタン -->
+            <button type="button" class="mpx-start" id="win-mpx-start" aria-label="スタート">
+              <span class="mpx-st-title" aria-hidden="true"><span class="ln1"><img class="w1" src="img/s1-txt-1.svg" alt=""><img class="w2" src="img/s1-txt-2.svg" alt=""></span><img class="w3" src="img/s1-txt-3.svg" alt=""><img class="w4" src="img/s1-txt-4.svg" alt=""></span>
+              <span class="mpx-st-play" aria-hidden="true"></span>
+            </button>
           </div>
         </section>
 

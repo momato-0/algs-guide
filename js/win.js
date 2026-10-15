@@ -141,8 +141,8 @@ if(window.ResizeObserver) new ResizeObserver(linkFinals).observe(document.queryS
     const part = k => {
       // 文は出す直前に入れかえる（先に入れると、前のフキダシが消えていく途中に次の文が見えてしまう）
       say.querySelector("p").innerHTML = texts[k]; say.classList.add("show");
-      // 最後の試合の、最後のフキダシ（「文句なしの優勝だ！」）が出たら紙ふぶき
-      if(i === LAST && k === texts.length - 1 && animate) startFx();
+      // 最後の試合の、最初のフキダシ（「なんと CATが」）が出たら紙ふぶき
+      if(i === LAST && k === 0 && animate) startFx();
       if(k + 1 < texts.length) sayTimer = setTimeout(() => { say.classList.remove("show"); sayTimer = setTimeout(() => part(k + 1), SAY_GAP); }, readOne(texts[k]));
     };
     sayTimer = setTimeout(() => part(0), animate && !reduce ? wait : 0);
