@@ -57,20 +57,22 @@
                 <div class="mpx-goal" id="win-mpx-goal"><b>50</b><small>pt</small></div>
               </div>
               <div class="mpx-rows" id="win-mpx-rows"></div>
+              <!-- フキダシ：濃い紫のうしろ幕に穴をあけて、話している所（玉や帯）だけ見せる -->
               <div class="mpx-say" id="win-mpx-say" aria-live="polite">
+                <div class="mpx-dim" id="win-mpx-dim"></div>
                 <p></p>
               </div>
               <!-- フキダシの猫アイコンのフチ（どの向きにも同じ太さで広げる） -->
               <svg width="0" height="0" style="position:absolute" aria-hidden="true"><filter id="win-outline" x="-20%" y="-20%" width="140%" height="140%"><feMorphology in="SourceAlpha" operator="dilate" radius="1" result="d"/><feFlood flood-color="#2a1360"/><feComposite in2="d" operator="in"/><feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge></filter></svg>
             </div>
             <div class="mpx-ctrl">
-              <div class="mpx-dots" id="win-mpx-dots"></div>
               <div class="mpx-btns">
                 <button type="button" class="mpx-b" id="win-mpx-pause" aria-label="一時停止"><svg viewBox="0 0 20 20" aria-hidden="true"><path class="i-pause" d="M6 4h3v12H6zM11 4h3v12h-3z"/><path class="i-play" d="M6 4l10 6-10 6z"/></svg></button>
                 <button type="button" class="mpx-b" id="win-mpx-replay" aria-label="最初から"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 10a6 6 0 1 0 2-4.5" fill="none" stroke-width="2.2" stroke-linecap="round"/><path d="M3 2v5h5z"/></svg></button>
               </div>
+              <div class="mpx-dots" id="win-mpx-dots"></div>
             </div>
-            <p class="mpx-credit" id="win-mpx-credit">thanks to：<a href="https://www.flaticon.com/free-icon/apple_2046393" title="Apple free icon" target="_blank" rel="noopener">apple</a>, <a href="https://www.flaticon.com/free-icon/beer_14112679" title="Beer free icon" target="_blank" rel="noopener">beer</a>, <a href="https://www.flaticon.com/free-icon/cat_2560492" title="Cat free icon" target="_blank" rel="noopener">cat</a> icons created by Magnific - Flaticon</p>
+            <div class="mpx-flash" id="win-mpx-flash" aria-hidden="true"><svg viewBox="0 0 20 20"><path class="i-pause" d="M6 4h3v12H6zM11 4h3v12h-3z"/><path class="i-play" d="M6 4l10 6-10 6z"/></svg></div>
             <!-- スタート画面：うしろのボードを曇りガラスのようにぼかして、タイトルとピンクの再生ボタン -->
             <button type="button" class="mpx-start" id="win-mpx-start" aria-label="スタート">
               <span class="mpx-st-title" aria-hidden="true"><span class="ln1"><img class="w1" src="img/s1-txt-1.svg" alt=""><img class="w2" src="img/s1-txt-2.svg" alt=""></span><img class="w3" src="img/s1-txt-3.svg" alt=""><img class="w4" src="img/s1-txt-4.svg" alt=""></span>
@@ -305,7 +307,15 @@
 
     <footer class="foot">
       <p>このサイトはファンが作った非公式のガイドです。Electronic Arts・Respawn Entertainment とは関係ありません。</p>
-      <p>フォント：<a href="https://inatsuka.com/extra/haranyan/" target="_blank" rel="noopener">haramasenyanko by Haru Inatsuka</a></p>
+      <!-- 素材のクレジット（セクションごとに） -->
+      <div class="credits">
+        <p class="credits-h">Thanks to</p>
+        <p class="credits-sec">セクション1</p>
+        <ul>
+          <li><a href="https://www.flaticon.com/free-icon/apple_2046393" title="Apple free icon" target="_blank" rel="noopener">apple</a>, <a href="https://www.flaticon.com/free-icon/beer_14112679" title="Beer free icon" target="_blank" rel="noopener">beer</a>, <a href="https://www.flaticon.com/free-icon/cat_2560492" title="Cat free icon" target="_blank" rel="noopener">cat</a> icons created by Magnific - Flaticon</li>
+          <li><a href="https://inatsuka.com/extra/haranyan/" target="_blank" rel="noopener">Haramase-Nyanko</a> font by Haru Inatsuka</li>
+        </ul>
+      </div>
       <p>スコア計算：ALGS公式ルール C6.1に準ずる</p>
     </footer>
   </div>

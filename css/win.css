@@ -157,6 +157,8 @@
 /* ---- マッチポイント形式って？（3チームの点数が伸びていくスライド）---- */
 #win .mpx{margin-top:14px}
 #win .mpx-h{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+/* 押しても文字のカーソル（点滅する縦棒）や選択が出ないように */
+#win .mpx-board{-webkit-user-select:none;user-select:none;caret-color:transparent}
 #win .mpx-board{--mx-bg:#5b2bbd;--icon:52px;--dot:38px;position:relative;max-width:720px;margin:0 auto;padding:16px 18px 12px;border-radius:16px;background:var(--mx-bg);color:#fff;overflow:hidden;overflow:clip}
 #win .mpx-title{text-align:center;font-size:clamp(22px,4.4vw,32px);font-weight:900;letter-spacing:.04em;line-height:1.2;min-height:1.2em}
 #win .mpx-title.pop{animation:win-mxTitle .45s cubic-bezier(.3,1.5,.5,1)}
@@ -172,10 +174,17 @@
 /* CAT は猫の横顔の輪郭が見えるよう、名前を少し下に */
 #win .mpx-team.t-cat span{margin-top:-4px}
 /* 説明のフキダシ（スタートと最後の試合）。ボードの真ん中に、うしろを少し暗くして出す */
-#win .mpx-say{position:absolute;inset:-6px -8px;z-index:4;display:grid;place-items:center;border-radius:12px;background:rgba(20,10,45,.5);opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
-#win .mpx-say.show{opacity:1;visibility:visible;cursor:pointer}
-#win .mpx-say p{position:relative;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:#fff;color:#2a1360;font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
+/* フキダシ。クリックはボードに通す（ボードを押すと一時停止・再生） */
+#win .mpx-say{position:absolute;inset:-6px -8px;z-index:4;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
+#win .mpx-say.show{opacity:1;visibility:visible}
+/* うしろ幕。穴の形は js が SVG のマスクで作る */
+#win .mpx-dim{position:absolute;inset:0;border-radius:12px;background:rgba(20,10,45,.5);-webkit-mask:var(--hole,none) 0 0/100% 100% no-repeat;mask:var(--hole,none) 0 0/100% 100% no-repeat}
+/* フキダシの高さは、穴にかぶらない所を js が決める（--sy） */
+#win .mpx-say p{position:absolute;left:50%;top:var(--sy,50%);translate:-50% 0;width:max-content;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:#fff;color:#2a1360;font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5)}
 #win .mpx-say.show p{animation:win-mxSay .4s cubic-bezier(.3,1.5,.5,1)}
+/* 続きのフキダシに切りかえる間は、フキダシだけ消す（うしろ幕は出したまま） */
+#win .mpx-say p{transition:opacity .3s}
+#win .mpx-say.next p{opacity:0}
 /* タイトルとフキダシの数字は、試合ボタンと同じ数字用の書体に */
 #win .mpx-title .n,#win .mpx-say .n{font-family:var(--f-num)}
 /* 白いフキダシの上でも猫の白い横顔が見えるよう、アイコンに濃い色のフチ */
@@ -207,6 +216,8 @@
 #win .mpx-why{position:absolute;left:calc(100% + 6px);top:50%;translate:0 -50%;z-index:3;padding:2px 8px;border-radius:999px;background:rgba(20,10,45,.75);color:#fff;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;animation:win-mxWhy 2.1s ease both}
 #win .mpx-gain.stay{animation:win-mxGainIn .5s cubic-bezier(.2,.8,.3,1) both}
 #win .mpx-why.stay{animation:win-mxWhyIn .4s ease both}
+#win .mpx-why.out{animation:win-mxWhyOut .3s ease both}
+@keyframes win-mxWhyOut{to{opacity:0}}
 #win .mpx-why.champ{background:var(--lit);color:var(--lit-ink)}
 /* 右はしに近い玉は、内訳を左に出してはみ出さないように */
 #win .mpx-why.left{left:auto;right:calc(100% + 6px)}
@@ -238,9 +249,13 @@
 #win .mpx-b svg path:not([fill]){stroke:none}
 #win .mpx-b .i-play{display:none}
 #win .mpx-board.paused .mpx-b .i-play{display:inline} #win .mpx-board.paused .mpx-b .i-pause{display:none}
-#win .mpx-credit{margin:10px 0 0;font-size:10px;color:rgba(255,255,255,.7);text-align:right;opacity:0;transition:opacity .6s}
-#win .mpx-credit a{color:inherit}
-#win .mpx-board.end .mpx-credit{opacity:1}
+/* 画面を押して一時停止・再生したときの、真ん中のマーク（YouTube みたいに、ふわっと出て消える） */
+#win .mpx-flash{position:absolute;left:50%;top:45%;z-index:5;width:64px;height:64px;translate:-50% -50%;display:grid;place-items:center;border-radius:50%;background:rgba(20,10,45,.6);opacity:0;pointer-events:none}
+#win .mpx-flash svg{width:26px;height:26px;fill:#fff}
+#win .mpx-flash .i-play{display:none}
+#win .mpx-flash.play .i-play{display:inline} #win .mpx-flash.play .i-pause{display:none}
+#win .mpx-flash.on{animation:win-mxFlash .6s ease-out}
+@keyframes win-mxFlash{0%{opacity:1;scale:.8}100%{opacity:0;scale:1.35}}
 /* 優勝の紙ふぶき（canvas）。ボードいっぱいに重ねて、クリックは下に通す */
 #win .mpx-fx{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
 /* 始まる前は、ボードの上にスタートボタン */
