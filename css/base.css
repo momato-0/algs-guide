@@ -1,7 +1,7 @@
 /* サイト共通：色・文字・ページの枠。セクションごとの見た目は css/<セクションID>.css に分ける */
 :root{
   --bg:#f1f2f5; --surface:#ffffff; --ink:#16181d; --muted:#626a77; --line:#d6dae1; --node:#e9ebf0; --node-line:#d9dce3; --node-top:#f7f8fa; --node-bot:#e1e4ea; --node-hi:rgba(255,255,255,.9);
-  --accent:#ff654a; --top:#f0388a; --top-soft:#ffe3ef; --bot:#1fb3a8; --bot-soft:#dcf5f2;
+  --accent:#d64769; --top:#f0388a; --top-soft:#ffe3ef; --bot:#1fb3a8; --bot-soft:#dcf5f2;
   --lit:#ffcf33; --lit-ink:#4a3600; --ball:#e3e6eb; --ball-ink:#4b525d;
   --fan:rgb(113,44,249); --fan-ink:rgb(98,32,230); --fan-soft:#eee8fb; --chip:rgba(0,0,0,.05); --champ:#f08a00; --champ-sh:rgba(150,70,0,.22); --bub:#fff6d1; --bub-line:#e0b400; --sep:#dde0e6;
   --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
@@ -9,12 +9,12 @@
 }
 @media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
   --bg:#101216; --surface:#191c22; --ink:#eceef2; --muted:#9aa1ad; --line:#2e333d; --node:#2e3440; --node-line:#3c4350; --node-top:#42567a; --node-bot:#1e2229; --node-hi:rgba(255,255,255,.08);
-  --accent:#ff654a; --top:#ff5aa2; --top-soft:#3b1a2a; --bot:#3fd0c4; --bot-soft:#123330;
+  --accent:#ff4a74; --top:#ff5aa2; --top-soft:#3b1a2a; --bot:#3fd0c4; --bot-soft:#123330;
   --lit:#ffd24a; --lit-ink:#3a2a00; --ball:#2b3039; --ball-ink:#b5bcc7;
   --fan:rgb(113,44,249); --fan-ink:#b89bff; --fan-soft:#2a2340; --chip:rgba(255,255,255,.08); --champ:#ffa531; --champ-sh:rgba(0,0,0,.5); --bub:#332b10; --bub-line:#8a6d10; --sep:#2a2f38; color-scheme:dark}}
 :root[data-theme="dark"]{
   --bg:#101216; --surface:#191c22; --ink:#eceef2; --muted:#9aa1ad; --line:#2e333d; --node:#2e3440; --node-line:#3c4350; --node-top:#42567a; --node-bot:#1e2229; --node-hi:rgba(255,255,255,.08);
-  --accent:#ff654a; --top:#ff5aa2; --top-soft:#3b1a2a; --bot:#3fd0c4; --bot-soft:#123330;
+  --accent:#ff4a74; --top:#ff5aa2; --top-soft:#3b1a2a; --bot:#3fd0c4; --bot-soft:#123330;
   --lit:#ffd24a; --lit-ink:#3a2a00; --ball:#2b3039; --ball-ink:#b5bcc7;
   --fan:rgb(113,44,249); --fan-ink:#b89bff; --fan-soft:#2a2340; --chip:rgba(255,255,255,.08); --champ:#ffa531; --champ-sh:rgba(0,0,0,.5); --bub:#332b10; --bub-line:#8a6d10; --sep:#2a2f38; color-scheme:dark}
 
