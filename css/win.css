@@ -258,7 +258,7 @@
 #win .mpx-toast.on{opacity:1;translate:-50% 0}
 /* 最後まで見たら、ボードの右よりに丸いステッカーの「友だちにシェア」がぽんっと貼られる。ちょっといびつなまんまる。
    ゆらゆら揺れて、右上と左下に漫画の揺れの線（短い2本ずつ）を白で */
-#win .mpx-cta{--d:80px;position:absolute;left:73%;top:42%;translate:-50% -50%;z-index:7;width:var(--d);height:var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;
+#win .mpx-cta{--d:80px;position:absolute;left:calc(73% - 15px);top:42%;translate:-50% -50%;z-index:7;width:var(--d);height:var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;
   border:0;border-radius:0;background:url(../img/s1-maru-1.svg) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:14px;font-weight:900;line-height:1.2;letter-spacing:.02em;cursor:pointer;
   --sh:drop-shadow(0 4px 0 rgba(20,10,45,.45));rotate:-6deg;filter:var(--sh);opacity:0;visibility:hidden;scale:.4;transition:opacity .2s,visibility .2s,scale .45s cubic-bezier(.3,1.7,.5,1)}
 #win .mpx-cta .ico{width:26px;height:26px;fill:#fff;stroke:#fff}
@@ -304,6 +304,9 @@
 @keyframes win-mxPulse{0%{opacity:.9;scale:1}100%{opacity:0;scale:1.55}}
 #win .mpx-start:hover .mpx-st-play{scale:1.08}
 #win .mpx-start:focus-visible{outline:3px solid #fff;outline-offset:-6px}
+/* PC は、タイトルを左上へ、再生ボタンを右下へずらして、斜めに重ねる配置に（スマホは縦に積むのでずらさない） */
+#win .mpx-st-title{translate:-47px -20px}
+#win .mpx-st-play{translate:55px 70px}
 @media (max-width:600px){
   #win .mpx-start{--k:.62;flex-direction:column}
   #win .mpx-st-title{order:1;rotate:-6deg}
@@ -312,6 +315,7 @@
   #win .mpx-st-title .w3{margin:0 0 0 calc(150px * var(--k))}
   #win .mpx-st-title .w4{margin:calc(10px * var(--k)) 0 0 calc(190px * var(--k))}
   #win .mpx-st-play{order:2}
+  #win .mpx-st-title,#win .mpx-st-play{translate:none}
   #win .mpx-board{--icon:42px;--dot:32px;padding:14px 12px 10px}
   #win .mpx-dot{font-size:14px}
   #win .mpx-gain{font-size:15px} #win .mpx-why{font-size:10px;padding:1px 6px}

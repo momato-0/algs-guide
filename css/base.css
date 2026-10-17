@@ -79,10 +79,16 @@ h1,h2,h3{text-wrap:balance}
 .fold-body{position:relative}
 .fold:not(.open) .fold-body{height:0;clip-path:inset(-600px -40px 0 -40px)}
 .fold:not(.open) .fold-body > *{pointer-events:none}
-/* いちばん下の閉じるボタン：セクションの右下の角に三角 */
-.fold-foot{display:none;position:relative;height:30px}
-.fold-btn.bot{top:auto;right:calc(-1 * var(--fold-px,20px));bottom:calc(-1 * var(--fold-pb,28px));width:110px;height:50px;padding:0 12px 8px 0;justify-content:flex-end}
+/* いちばん下の閉じるボタン：セクションの右下の角に三角。上の見出しと同じく、下はしの帯のどこを押しても閉じる */
+.fold-foot{display:none;position:relative;height:calc(30px + var(--fold-pb,28px));margin:0 calc(-1 * var(--fold-px,20px)) calc(-1 * var(--fold-pb,28px));cursor:pointer}
+.fold-foot:hover .fold-btn::before{background:#d6492f}
+.fold-btn.bot{top:auto;right:0;bottom:0;width:110px;height:50px;padding:0 12px 8px 0;justify-content:flex-end}
 .fold-btn.bot::before{clip-path:polygon(100% 0,100% 100%,0 100%)}
 .fold.open .fold-foot{display:block}
+/* スマホは三角を少し小さく */
+@media (max-width:600px){
+  .fold-btn{width:98px;font-size:14px}
+  .fold-btn.bot{width:90px}
+}
 
 @media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
