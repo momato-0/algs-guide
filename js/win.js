@@ -46,22 +46,23 @@ pSel.addEventListener("change", draw);
 draw();
 
 function linkFinals(){
-  // 矢印は、決勝の帯の下のふちの真ん中へ向かう
+  // 矢印は、決勝の帯の下のふちの真ん中へ向かい、頭は帯の上にのせる
   const r = $("win-fold-btn").getBoundingClientRect();
   document.querySelectorAll("#win .bracket svg.top").forEach(svg=>{
     if(!svg.getBoundingClientRect().width) return;
     const m = svg.getScreenCTM(); if(!m) return;
     const pt = svg.createSVGPoint();
-    pt.x = r.left + r.width/2; pt.y = r.bottom + 6;
+    pt.x = r.left + r.width/2; pt.y = r.bottom - 3;
     const q = pt.matrixTransform(m.inverse()), half = r.width/2/m.a, top = q.y;
-    const x1 = q.x - half*.45, x2 = q.x + half*.25;
+    const x1 = q.x - half*.45;
     svg.querySelectorAll("[data-link]").forEach(a=>{
       const sx = +a.dataset.sx, sy = +a.dataset.sy;
       let d;
       if(a.dataset.link === "w") d = a.dataset.mode === "m"
         ? `M${sx} ${sy} L${sx} ${top+70} C${sx} ${top+25} ${x1} ${top+45} ${x1} ${top}`
         : `M${sx} ${sy} C${sx} ${top+170} ${x1} ${top+110} ${x1} ${top}`;
-      else { const mid = (sy + top)/2; d = `M${sx} ${sy} C${sx} ${mid} ${x2} ${mid} ${x2} ${top}`; }
+      // Elim 2 からの矢印は、真上へ。手描きっぽく少しだけゆらす
+      else { const h = sy - top; d = `M${sx} ${sy} C${sx+7} ${sy-h*.35} ${sx-5} ${sy-h*.7} ${sx+3} ${top}`; }
       a.setAttribute("d", d);
     });
   });
@@ -95,6 +96,9 @@ function setFold(on){
   if(!on && fold.getBoundingClientRect().top < 0) fold.scrollIntoView({block:"start"});
 }
 foldBtn.addEventListener("click", () => setFold(!fold.classList.contains("open")));
+// 閉じているときのチラ見えの所を押しても、ひらく
+// （中身は inert で押せないので、押した所は外がわの #win-fold になる）
+fold.addEventListener("click", e => { if(!fold.classList.contains("open") && !foldBtn.contains(e.target) && !$("win-fold-body").contains(e.target)) setFold(true); });
 $("win-fold-body").inert = true;
 fold.querySelector(".fold-foot").addEventListener("click", () => setFold(false));
 if(window.ResizeObserver) new ResizeObserver(linkFinals).observe($("win"));

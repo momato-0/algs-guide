@@ -20,7 +20,6 @@
   <header class="site-nav">
     <nav class="nav-bar" aria-label="メインナビゲーション">
       <a class="brand" href="#top" aria-label="ALGS ゆるガイド トップへ"><span class="brand-main">ALGS</span><span class="brand-sub">ゆるガイド</span></a>
-      <a href="#top">はじめてのALGS</a>
       <a href="#win">どうなったら勝ち？</a>
       <a href="#maps">マップくわしく</a>
       <a href="#teams">注目チーム</a>
@@ -53,7 +52,6 @@
       <svg class="drawer-paper" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"><path d="M9 0H110V110H4C6 92 1 80 5 66 8 54 3 42 6 30 9 18 5 10 9 0Z"/></svg>
       <button type="button" class="nav-sq dark drawer-close" id="nav-close" aria-label="メニューをとじる"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <ul>
-        <li><a href="#top">はじめてのALGS</a></li>
         <li><a href="#win">どうなったら勝ち？</a></li>
         <li><a href="#maps">マップくわしく</a></li>
         <li><a href="#teams">注目チーム</a></li>
@@ -97,7 +95,7 @@
           <p class="section-kicker">FIRST STEP</p>
           <h2 id="guide-h">まずは、ここから。<span class="hand-underline"></span></h2>
         </div>
-        <p>気になるところだけ、つまみ読みでOK。<br>知ると次の観戦がちょっと変わります。</p>
+        <p>気になるところだけ、つまみ読みでOK。<br>知ると次の観戦がちょっと変わるよ。</p>
       </div>
 
       <div class="guide-grid">
@@ -107,7 +105,6 @@
             <div><span class="feature-number">01</span><span class="feature-english">HOW TO WIN</span></div>
             <div>
               <h3 id="win-h">どうなったら勝ち？</h3>
-              <p>まずはここから、ALGSの勝ちかたをつかもう。</p>
             </div>
           </div>
 
@@ -117,29 +114,25 @@
               <span class="video-copy"><span>1分でわかる</span><strong>マッチポイント<br>形式とは？</strong></span>
               <span class="video-play" aria-hidden="true"><i></i></span>
               <span class="video-duration" id="win-vid-len"></span>
-              <span class="video-caption">クリックして再生</span>
             </button>
 
+            <!-- 便利ツール：押すと計算機・スコア表の窓がひらく。マウスをのせると指がのる -->
             <div class="tool-cluster">
-              <button type="button" class="mini-tool calculator-tool" data-tab="calc">
-                <span class="feature-label">CALCULATOR</span>
-                <span class="tool-icon" aria-hidden="true"><svg viewBox="0 0 80 80"><rect x="12" y="6" width="56" height="68" rx="8"/><rect x="21" y="15" width="38" height="15" rx="3"/><circle cx="26" cy="43" r="4"/><circle cx="40" cy="43" r="4"/><circle cx="54" cy="43" r="4"/><circle cx="26" cy="57" r="4"/><circle cx="40" cy="57" r="4"/><path d="M53 54v8m-4-4h8"/></svg></span>
-                <span class="tool-copy"><strong>マッチポイント<br>計算機</strong><small>あと何点で点灯する？を計算</small></span>
-                <span class="tool-action">ひらく ↗</span>
+              <p class="tools-title">便利ツール</p>
+              <button type="button" class="tool calc-tool" data-tab="calc">
+                <span class="tool-art" aria-hidden="true"><img class="tool-icon" src="img/s1-calc-2.svg" alt="" width="197" height="240"><img class="tool-hand" src="img/s1-hand.svg" alt="" width="135" height="106"></span>
+                <span class="tool-copy"><strong>マッチ<wbr>ポイント<br>計算機</strong><small>あと何点で点灯？</small></span>
               </button>
-              <button type="button" class="mini-tool score-tool" data-tab="table">
-                <span class="feature-label">SCORE TABLE</span>
-                <span class="tool-icon" aria-hidden="true"><svg viewBox="0 0 80 80"><path d="M13 14h54v52H13Z"/><path d="M13 31h54M13 48h54M31 14v52M50 14v52"/><path class="check-mark" d="m21 39 5 5 9-11"/></svg></span>
-                <span class="tool-copy"><strong>スコア表</strong><small>順位ごとのポイントを見る</small></span>
-                <span class="tool-action">見る ↗</span>
+              <button type="button" class="tool score-tool" data-tab="table">
+                <span class="tool-art" aria-hidden="true"><img class="tool-icon" src="img/s1-score-2.svg" alt="" width="172" height="172"><img class="tool-hand" src="img/s1-hand.svg" alt="" width="135" height="106"></span>
+                <span class="tool-copy"><strong>スコア表</strong><small>順位ごとのポイント</small></span>
               </button>
             </div>
 
             <!-- 決勝の帯。押すと下に「決勝までの道」（DAY 3 / DAY 1–2 の図）がたてにひらく -->
             <div class="tournament-feature" id="win-fold">
               <button type="button" class="tournament-trigger" id="win-fold-btn" aria-expanded="false" aria-controls="win-fold-body">
-                <span class="feature-label">FINAL</span>
-                <span class="tournament-title"><strong><span class="dt">11/2</span><small>(月)</small> <span class="dt">8:00</span><small class="til">〜</small> 決勝スタート！</strong><small>20チーム ・ マッチポイント制</small></span>
+                <span class="tournament-title"><strong><span class="when"><span class="dt">11/2</span><small>(月)</small> <span class="dt">8:00</span><small class="til">〜</small></span><wbr><span class="when">決勝</span></strong><small>20チーム ・ マッチポイント制</small></span>
                 <span class="accordion-action"><span class="fold-open">決勝までの道</span><span class="fold-close">とじる</span><i aria-hidden="true"></i></span>
               </button>
               <div class="tournament-content" id="win-fold-body">
