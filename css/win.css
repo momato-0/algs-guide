@@ -1,53 +1,119 @@
-/* セクション1「どうなったら勝ち？」の見た目。全部 #win の中だけに効く */
-#win .sheet{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px 20px 28px;overflow:hidden;overflow:clip}
-#win .day{font-family:var(--f-num);font-size:12px;font-weight:600;letter-spacing:.12em;color:var(--muted)}
-
-/* ---- 決勝ゾーン ---- */
-/* 計算機・スコア表のカードと「決勝スタート」をたてに並べる */
-#win .finals{margin-top:26px;display:flex;flex-direction:column;align-items:center;gap:22px;position:relative}
-#win .fwrap{display:flex;justify-content:center}
-#win .fpill{padding:12px 48px 14px;border:1px solid var(--node-line);border-radius:16px;font-weight:700;font-size:24px;letter-spacing:.14em;background:linear-gradient(180deg,var(--node-top),var(--node-bot));box-shadow:inset 0 1px 0 var(--node-hi),0 12px 28px -18px rgba(0,0,0,.6);display:flex;flex-direction:column;align-items:center;line-height:1.3}
-#win .fpill span{font-size:12px;font-weight:500;letter-spacing:.02em;color:var(--muted)}
-
-
-/* ---- 計算機とスコア表のカード（手札みたいに2枚を扇形に。座布団は1枚、乗せた方の名前を出す） ---- */
-#win .tools{--cw:74px;display:flex;flex-direction:column;align-items:center;width:calc(var(--cw) * 3.3)}
-/* 開き具合 --o（0＝ほぼ重なって閉じる、1＝扇に開く）と、持ち上げ --up を数値として動かせるようにする */
-@property --o{syntax:"<number>";inherits:true;initial-value:1}
-@property --up{syntax:"<number>";inherits:false;initial-value:0}
-#win .hand{--o:1;display:flex;justify-content:center;position:relative;z-index:2;padding-top:10px;transition:--o .45s cubic-bezier(.34,1.56,.64,1)}
-/* ふだんは「閉じる → ゆっくり開く（少し行きすぎて戻る）→ しばらく開いたまま → 閉じる」をくり返す */
-@media (prefers-reduced-motion:no-preference){
-  #win .hand{animation:win-fan 5s infinite}
-  #win .tools:is(:hover,:focus-within) .hand{animation:none}
+/* 01「どうなったら勝ち？」の見た目。全部 #win の中だけに効く
+   トップの大きいカード：見出し → スライドのサムネ・計算機・スコア表 → 決勝の帯（押すと決勝までの道がひらく） */
+#win{grid-column:1/-1;position:relative;margin-bottom:24px;padding:34px;color:var(--ink);background:var(--coral);border:3px solid var(--ink);border-radius:29px 20px 35px 23px;box-shadow:7px 8px 0 rgba(246,240,228,.24);transform:rotate(-.25deg)}
+/* キーボードで選んだときの枠：コーラルの地の上ではコーラルの枠が見えないので、深緑に */
+#win :focus-visible{outline-color:var(--ink)}
+#win .day{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--muted)}
+#win .feature-guide-heading{display:grid;grid-template-columns:145px 1fr;gap:20px;align-items:end;margin-bottom:28px}
+#win .feature-guide-heading > div:first-child{display:flex;align-items:flex-end;gap:12px}
+#win .feature-number{font-family:var(--f-head);font-size:4.4rem;line-height:.85}
+#win .feature-english{padding-bottom:4px;font-size:12px;font-weight:800;letter-spacing:.15em;writing-mode:vertical-rl}
+#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-head);font-size:clamp(1.8rem,3vw,3rem);font-weight:400;letter-spacing:-.04em}
+#win .feature-guide-heading p{margin:0;font-size:16px;font-weight:700}
+#win .feature-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,.85fr);gap:18px}
+#win .feature-label{display:block;font-size:13px;font-weight:800;letter-spacing:.16em;opacity:.82}
+#win .video-feature,#win .mini-tool,#win .tournament-trigger,#win .fold-foot{font:inherit;color:inherit;cursor:pointer}
+/* スライドのサムネ */
+#win .video-feature{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:385px;padding:24px;overflow:hidden;text-align:left;color:var(--paper);background:var(--ink);border:3px solid var(--ink);border-radius:22px 16px 27px 18px;isolation:isolate}
+#win .video-feature::before,#win .video-feature::after{content:"";position:absolute;z-index:-1;border:3px solid var(--paper);opacity:.18;border-radius:47% 53% 42% 58%;transition:transform .3s var(--ease-out)}
+#win .video-feature::before{width:420px;height:420px;top:-220px;right:-120px}
+#win .video-feature::after{width:260px;height:260px;left:-100px;bottom:-170px}
+#win .video-feature:hover::before{transform:scale(1.15) rotate(15deg)}
+#win .video-copy{position:absolute;top:32%;left:8%;display:block;rotate:-2deg}
+#win .video-copy > span{display:block;width:fit-content;margin-bottom:7px;padding:4px 9px;color:var(--ink);background:var(--yellow);font-size:13px;font-weight:800}
+#win .video-copy strong{display:block;font-family:var(--f-head);font-size:clamp(2.1rem,4.3vw,4.4rem);font-weight:400;line-height:1.08;letter-spacing:-.06em}
+#win .video-play{position:absolute;right:12%;bottom:18%;width:88px;height:88px;display:grid;place-items:center;background:var(--coral);border:3px solid var(--paper);border-radius:50% 46% 53% 48%;box-shadow:4px 4px 0 var(--paper);transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out)}
+#win .video-feature:hover .video-play{transform:rotate(7deg) translate(3px,3px);box-shadow:1px 1px 0 var(--paper)}
+#win .video-play i{display:block;width:0;height:0;margin-left:6px;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid var(--paper)}
+#win .video-duration{position:absolute;right:22px;top:20px;padding:4px 10px;color:var(--ink);background:var(--paper);border-radius:20px;font-family:var(--f-num);font-size:12px;font-weight:700}
+#win .video-duration:empty{display:none}
+#win .video-caption{position:absolute;left:24px;bottom:20px;font-size:14px;font-weight:700;letter-spacing:.05em;opacity:.75}
+/* 計算機とスコア表（押すと、今までの窓がそれぞれのタブでひらく） */
+#win .tool-cluster{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+#win .mini-tool{position:relative;min-height:385px;padding:22px 18px;display:flex;flex-direction:column;text-align:left;background:var(--paper);border:3px solid var(--ink);border-radius:18px 25px 17px 23px;transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out)}
+#win .mini-tool:nth-child(2){border-radius:27px 17px 23px 15px}
+#win .mini-tool:hover{z-index:1;transform:rotate(1.5deg) translateY(-5px);box-shadow:5px 6px 0 var(--ink)}
+#win .tool-icon{height:135px;display:grid;place-items:center}
+#win .tool-icon svg{width:82px;fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+#win .calculator-tool .tool-icon svg{rotate:-5deg} #win .score-tool .tool-icon svg{rotate:4deg}
+#win .score-tool .check-mark{stroke:var(--coral);stroke-width:7}
+#win .tool-copy{display:block;margin-top:auto}
+#win .tool-copy strong,#win .tool-copy small{display:block}
+#win .tool-copy strong{min-height:2.7em;font-family:var(--f-head);font-size:1.2rem;font-weight:400;line-height:1.35}
+#win .tool-copy small{margin-top:8px;font-size:13px;font-weight:700;line-height:1.6}
+#win .tool-action{align-self:flex-end;margin-top:18px;min-height:36px;display:inline-flex;align-items:center;padding:7px 14px;color:var(--paper);background:var(--ink);border-radius:20px;font-size:13px;font-weight:800}
+/* 決勝の帯と、たてにひらく決勝までの道 */
+#win .tournament-feature{grid-column:1/-1;overflow:hidden;background:var(--yellow);border:3px solid var(--ink);border-radius:19px 27px 20px 25px}
+#win .tournament-trigger{width:100%;min-height:110px;padding:20px 26px;display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:24px;text-align:left;background:transparent;border:0}
+#win .tournament-title strong,#win .tournament-title > small{display:block}
+#win .tournament-title strong{font-family:var(--f-head);font-size:clamp(1.4rem,2.6vw,2rem);font-weight:400;line-height:1.2}
+#win .tournament-title strong small{font-size:.6em}
+/* 日付と時刻の数字は、見出しの書体だと細くて読みにくいので、本文の書体（M PLUS Rounded）の太字にする。「〜」は小さく */
+#win .tournament-title .dt{font-family:var(--f-body);font-weight:800;font-size:1.05em;letter-spacing:.03em;margin-inline:.03em}
+#win .tournament-title .til{margin-left:.05em;font-size:.7em}
+#win .tournament-title > small{margin-top:5px;font-size:15px;font-weight:700}
+#win .accordion-action{display:flex;align-items:center;gap:13px;font-size:15px;font-weight:800}
+#win .accordion-action i,#win .fold-foot i{position:relative;flex:none;width:42px;height:42px;background:var(--ink);border-radius:50%}
+#win .accordion-action i::before,#win .accordion-action i::after,#win .fold-foot i::before{content:"";position:absolute;top:20px;left:13px;width:16px;height:2px;background:var(--paper);transition:transform .18s var(--ease-out)}
+#win .accordion-action i::after{transform:rotate(90deg)}
+#win .tournament-feature.open .accordion-action i::after{transform:rotate(0)}
+#win .fold-close,#win .tournament-feature.open .fold-open{display:none}
+#win .tournament-feature.open .fold-close{display:inline}
+#win .tournament-content{display:grid;grid-template-rows:0fr;transition:grid-template-rows .3s var(--ease-out)}
+#win .tournament-content > *{overflow:hidden;min-height:0}
+#win .tournament-feature.open .tournament-content{grid-template-rows:1fr}
+#win .tournament-content > div{background:var(--paper);border-top:0 solid var(--ink);transition:border-width .3s var(--ease-out)}
+#win .tournament-feature.open .tournament-content > div{border-top-width:3px}
+#win .road{position:relative;padding:22px 24px 8px}
+/* いちばん下の「とじる」：帯のどこを押しても閉じる */
+#win .fold-foot{width:100%;display:flex;align-items:center;justify-content:flex-end;gap:13px;padding:12px 26px 16px;border:0;border-top:2px dashed var(--line);background:none;font-size:15px;font-weight:800}
+#win .fold-foot:hover i,#win .tournament-trigger:hover i{background:color-mix(in srgb,var(--ink) 80%,var(--coral))}
+/* スライドの窓 */
+#win .vid-dlg{width:min(780px,calc(100% - 24px));max-width:none;padding:10px;background:var(--paper);border:3px solid var(--ink);border-radius:25px 18px 29px 20px;box-shadow:10px 10px 0 var(--coral);overflow:visible}
+#win .vid-dlg::backdrop{background:color-mix(in srgb,var(--ink) 82%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+#win .vid-dlg .mpx{margin:0}
+:root:has(#win .vid-dlg:modal){overflow:hidden}
+@media (max-width:1000px){
+  #win .feature-layout{grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr)}
+  #win .mini-tool{padding:20px 14px}
 }
-@keyframes win-fan{
-  0%,14%{--o:0;animation-timing-function:cubic-bezier(.16,1,.3,1)}
-  44%{--o:1.1;animation-timing-function:ease-in-out}
-  54%{--o:.97;animation-timing-function:ease-in-out}
-  62%,84%{--o:1;animation-timing-function:cubic-bezier(.65,0,.35,1)}
-  100%{--o:0}
+@media (max-width:800px){
+  #win .feature-layout{grid-template-columns:1fr}
+  #win .video-feature{min-height:360px}
+  #win .mini-tool{min-height:330px}
 }
-#win .card{--up:0;width:var(--cw);padding:0;border:0;background:none;cursor:pointer;position:relative;transform-origin:50% 100%;transition:--up .25s cubic-bezier(.3,1.5,.5,1)}
-#win .card img{display:block;width:100%;height:auto;filter:drop-shadow(0 4px 6px rgba(0,0,0,.4))}
-#win .c-calc{z-index:2;transform:translateX(calc(var(--cw) * .3 * (1 - var(--o)))) translateY(calc(var(--up) * -10px)) rotate(calc(-3deg - 8deg * var(--o) - 2deg * var(--up)))}
-#win .c-table{z-index:1;margin-left:calc(var(--cw) * -.22);transform:translateX(calc(var(--cw) * -.3 * (1 - var(--o)))) translateY(calc(4px * var(--o) - 12px * var(--up))) rotate(calc(5deg + 5deg * var(--o) + 2deg * var(--up)))}
-#win .card:hover,#win .card:focus-visible{z-index:3;--up:1}
-#win .card:active{scale:.96}
-#win .card:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:8px}
-/* カードの下に、それぞれの名前を並べて出す */
-#win .tlabel{width:100%;margin-top:calc(var(--cw) * -.42);padding:calc(var(--cw) * .5) 18px calc(var(--cw) * .26);position:relative;z-index:1;isolation:isolate;
-  color:#fff;font-weight:900;font-size:14px;line-height:1.2;text-align:center;-webkit-text-stroke:3px #1d1b3a;paint-order:stroke fill;min-height:2.4em;display:grid;grid-template-columns:1fr 1fr;column-gap:4px;place-items:center}
-/* 座布団は手描きの形（SVG）を「型」（mask）にして、中を --zab の色で塗る。色は --zab を変えるだけ
-   形はファイルにせずここに直接書く（ファイルを読む形だと、PCで index.html を直接開いたときに型が読めず透明になるため） */
-#win{--zab-shape:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 277.954 173.92' preserveAspectRatio='none'%3E%3Cpath transform='translate(-16.087 -1060.193)' d='M173.578 1060.708c-23.932 4.324-49.316 1.221-72.012 11.535-21.45 8.044-42.178 19.667-57.36 37.143-44.662 30.938-31.52 82.913 7.283 113.617 23.773 14.572 45.1 10.917 72.022 10.116 47.054-6.915 77.177-1.727 114.494-11.944 26.44-8.22 43.23-33.161 50.917-58.55 13.84-37.775-1.837-59.491-29.623-83.61-8.42-3.543-62.278-22.132-85.721-18.307'/%3E%3C/svg%3E")}
-#win .tlabel::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--zab,#393864);
-  -webkit-mask:var(--zab-shape) center/100% 100% no-repeat;mask:var(--zab-shape) center/100% 100% no-repeat}
+@media (max-width:650px){
+  #win{padding:22px 17px;margin-bottom:14px;border-radius:22px 16px 27px 18px;transform:none}
+  #win .feature-guide-heading{grid-template-columns:75px 1fr;gap:14px;align-items:center;margin-bottom:22px}
+  #win .feature-number{font-size:3.2rem}
+  #win .feature-english{display:none}
+  #win .feature-guide-heading h3{font-size:1.7rem}
+  #win .feature-guide-heading p{margin-top:5px;font-size:13px;line-height:1.5}
+  #win .tournament-title > small{font-size:13px}
+  #win .feature-label{font-size:11px}
+  #win .feature-layout{gap:12px}
+  #win .video-feature{min-height:330px;padding:18px}
+  #win .video-copy{top:28%}
+  #win .video-copy strong{font-size:clamp(2rem,11vw,3.2rem)}
+  #win .video-play{right:10%;bottom:15%;width:70px;height:70px}
+  #win .video-caption{left:18px;bottom:15px}
+  #win .tool-cluster{gap:10px}
+  #win .mini-tool{min-height:290px;padding:17px 12px}
+  #win .tool-icon{height:110px}
+  #win .tool-icon svg{width:65px}
+  #win .tool-copy strong{font-size:1rem}
+  #win .tool-copy small{font-size:11px}
+  #win .tournament-trigger{padding:18px;grid-template-columns:1fr auto;gap:12px}
+  #win .tournament-trigger > .feature-label{grid-column:1/-1}
+  #win .accordion-action{flex-direction:column-reverse;gap:5px;font-size:11px}
+  #win .road{padding:18px 12px 4px}
+  #win .fold-foot{padding:10px 18px 14px}
+  #win .dlg-x{top:-14px;right:-8px}
+}
 
-/* ---- 押したら出てくる窓（PCは真ん中、スマホは下からせり上がる）。中の色は明暗どちらのテーマでも同じ ---- */
-#win .dlg{--d-bg1:#46447e;--d-bg2:#2e3352;--d-pan:#272538;--d-pan2:rgba(20,20,45,.35);--d-dd:#5a3cb8;--d-tri:#c9a8ff;--d-num:#f1ff88;
-  padding:0;border:0;border-radius:26px;width:min(400px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);color:#fff;background:linear-gradient(180deg,var(--d-bg1),var(--d-bg2));box-shadow:0 30px 60px -20px rgba(0,0,0,.7);overflow:visible}
-#win .dlg::backdrop{background:rgba(8,10,16,.55)}
+/* ---- 計算機とスコア表の窓（PCは真ん中、スマホは下からせり上がる）。クリームの紙に深緑の太い線、ずらしたコーラルの影 ---- */
+#win .dlg{padding:0;border:3px solid var(--ink);border-radius:25px 18px 29px 20px;width:min(400px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);color:var(--ink);background:var(--paper);box-shadow:8px 8px 0 var(--coral);overflow:visible}
+#win .dlg::backdrop{background:color-mix(in srgb,var(--ink) 70%,transparent)}
 #win .dlg[open]{animation:win-dlgPop .28s cubic-bezier(.3,1.4,.5,1)}
 #win .dlg-in{padding:14px 18px 20px;max-height:calc(100dvh - 32px);overflow:auto;display:flex;flex-direction:column;gap:16px;box-sizing:border-box}
 #win .dlg-head{display:flex;align-items:center;gap:8px}
@@ -56,104 +122,96 @@
 #win .dlg input{-webkit-user-select:auto;user-select:auto;caret-color:auto}
 /* 上のタブ：［×］MP計算機 | スコア表 */
 #win .tabs{display:flex;align-items:center}
-#win .tab{padding:4px 10px;border:0;background:none;color:rgba(255,255,255,.55);font:inherit;font-size:14px;font-weight:700;cursor:pointer;border-bottom:2px solid transparent}
-#win .tab + .tab{border-left:1px solid rgba(255,255,255,.3)}
-#win .tab:hover,#win .tab[aria-selected="true"]{color:#fff}
-#win .tab[aria-selected="true"]::after{content:"";display:block;height:2px;margin-top:3px;border-radius:1px;background:var(--accent)}
+#win .tab{padding:4px 10px;border:0;background:none;color:color-mix(in srgb,var(--ink) 50%,transparent);font-family:var(--f-head);font-size:17px;cursor:pointer}
+#win .tab + .tab{border-left:2px solid var(--line)}
+#win .tab:hover,#win .tab[aria-selected="true"]{color:var(--ink)}
+/* 選んでいるタブには、手描きっぽい下線 */
+#win .tab[aria-selected="true"]::after{content:"";display:block;height:3px;margin-top:2px;border-radius:50%;background:var(--coral);rotate:-1.5deg}
 /* 2つのタブの中身は同じ場所に重ねておいて、見えない方は隠すだけ。窓の高さは長い方にそろう */
 #win .panes{display:grid}
 #win .pane{grid-area:1/1;display:flex;flex-direction:column;gap:16px}
 #win .pane[hidden]{display:flex;visibility:hidden}
-#win .x{width:28px;height:28px;border-radius:8px;border:1.5px solid rgba(255,255,255,.45);background:rgba(0,0,0,.2);cursor:pointer;position:relative;flex:none}
-#win .x::before,#win .x::after{content:"";position:absolute;left:50%;top:50%;width:13px;height:2px;border-radius:1px;background:#fff;transform:translate(-50%,-50%) rotate(45deg)}
+#win .x{width:34px;height:34px;border-radius:50%;border:2px solid var(--ink);background:var(--ink);cursor:pointer;position:relative;flex:none}
+#win .x::before,#win .x::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2.5px;border-radius:1px;background:var(--paper);transform:translate(-50%,-50%) rotate(45deg)}
 #win .x::after{transform:translate(-50%,-50%) rotate(-45deg)}
-#win .x:hover{border-color:var(--accent)}
-#win .pan{background:var(--d-pan2);border-radius:20px;padding:16px 18px}
+#win .x:hover{background:color-mix(in srgb,var(--ink) 80%,var(--coral))}
+#win .pan{background:var(--white);border:2px solid var(--ink);border-radius:18px 14px 20px 13px;padding:16px 18px}
 /* 上の段：今の点数・スライダー・あと何点。点数の丸はわざと上にはみ出す */
-#win .pan1{background:var(--d-pan);padding:14px 0 0;margin-top:30px;box-shadow:0 4px 0 rgba(0,0,0,.25)}
-#win .now{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:700;font-size:16px;padding:0 16px}
-#win .pin{display:inline-grid;place-items:center;width:96px;height:96px;margin-top:-56px;border-radius:50%;background:var(--fan);color:#fff;font-family:var(--f-num);font-weight:700;font-size:48px;font-variant-numeric:tabular-nums;transition:background .3s}
-#win .pin.lit{background:var(--lit);color:var(--lit-ink);filter:drop-shadow(0 0 10px color-mix(in srgb,var(--lit) 70%,transparent))}
+#win .pan1{padding:14px 0 0;margin-top:30px;box-shadow:3px 3px 0 var(--ink)}
+#win .now{display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;font-size:16px;padding:0 16px}
+#win .pin{display:inline-grid;place-items:center;width:96px;height:96px;margin-top:-56px;border:3px solid var(--ink);border-radius:50% 46% 53% 48%;background:var(--blue);color:var(--ink);font-family:var(--f-num);font-weight:700;font-size:46px;font-variant-numeric:tabular-nums;transition:background .3s var(--ease-out)}
+#win .pin.lit{background:var(--lit);color:var(--lit-ink)}
 #win .slide{display:flex;align-items:center;gap:12px;padding:12px 14px 16px}
-#win .step{width:38px;height:38px;border-radius:50%;border:1.5px solid rgba(255,255,255,.75);background:#000;cursor:pointer;position:relative;flex:none}
-#win .step::before,#win .step.plus::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2px;border-radius:1px;background:#fff;transform:translate(-50%,-50%)}
+#win .step{width:38px;height:38px;border-radius:50%;border:2px solid var(--ink);background:var(--paper);cursor:pointer;position:relative;flex:none;box-shadow:2px 2px 0 var(--ink)}
+#win .step::before,#win .step.plus::after{content:"";position:absolute;left:50%;top:50%;width:14px;height:2.5px;border-radius:1px;background:var(--ink);transform:translate(-50%,-50%)}
 #win .step.plus::after{transform:translate(-50%,-50%) rotate(90deg)}
-#win .step:active{transform:scale(.92)}
+#win .step:active{translate:2px 2px;box-shadow:none}
 #win input[type=range]{flex:1;min-width:0;height:28px;margin:0;background:none;appearance:none;-webkit-appearance:none;cursor:pointer}
-#win input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:#fff}
-#win input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:#fff}
-#win input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-10px;border-radius:50%;background:var(--fan);border:2px solid #fff;box-shadow:0 2px 6px rgba(0,0,0,.4)}
-#win input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--fan);border:2px solid #fff}
+#win input[type=range]::-webkit-slider-runnable-track{height:6px;border-radius:3px;background:var(--ink)}
+#win input[type=range]::-moz-range-track{height:6px;border-radius:3px;background:var(--ink)}
+#win input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;margin-top:-10px;border-radius:50%;background:var(--coral);border:3px solid var(--ink)}
+#win input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:var(--coral);border:3px solid var(--ink)}
 /* あと何点の帯 */
-#win .need{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;min-height:76px;padding:6px 16px;border-radius:0 0 20px 20px;font-weight:700;font-size:17px;
-  background:linear-gradient(90deg,#5a3cc4,#2f2266 70%,#4a33a8)}
+#win .need{position:relative;display:flex;align-items:center;justify-content:center;gap:10px;min-height:76px;padding:6px 16px;border-radius:0 0 18px 11px;font-weight:800;font-size:17px;background:var(--ink);color:var(--paper)}
 #win .need .arr{width:34px;height:auto;flex:none}
-#win .need .bn{font-family:var(--f-num);font-size:52px;line-height:1;color:var(--d-num)}
-#win .need.done{background:linear-gradient(90deg,#ffd45e,#ffb93b);color:var(--lit-ink);font-size:15px;text-align:center;line-height:1.5}
+#win .need .bn{font-family:var(--f-num);font-size:52px;line-height:1;color:var(--yellow)}
+#win .need.done{background:var(--lit);color:var(--lit-ink);font-size:15px;text-align:center;line-height:1.5}
 /* 下の段：例えば〜なら。▼の位置（右はし）でそろえる */
-#win .pan2{display:flex;flex-direction:column;gap:12px;font-weight:700;font-size:16px}
+#win .pan2{display:flex;flex-direction:column;gap:12px;font-weight:800;font-size:16px}
 #win .exl{display:flex;align-items:center;justify-content:flex-end;gap:12px}
 #win .exl:first-child .dd{margin-left:auto}
 #win .tail{width:3em;text-align:left}
-#win .dd{font:inherit;font-weight:700;color:#fff;padding:10px 40px 10px 22px;border:0;border-radius:10px;background-color:var(--d-dd);cursor:pointer;appearance:none;-webkit-appearance:none;
-  background-image:linear-gradient(45deg,transparent 50%,var(--d-tri) 50%),linear-gradient(135deg,var(--d-tri) 50%,transparent 50%);
+#win .dd{font:inherit;font-weight:800;color:var(--ink);padding:9px 40px 9px 20px;border:2px solid var(--ink);border-radius:12px 9px 13px 8px;background-color:var(--paper);box-shadow:2px 2px 0 var(--ink);cursor:pointer;appearance:none;-webkit-appearance:none;
+  background-image:linear-gradient(45deg,transparent 50%,var(--ink) 50%),linear-gradient(135deg,var(--ink) 50%,transparent 50%);
   background-position:calc(100% - 21px) 55%,calc(100% - 15px) 55%;background-size:6px 6px;background-repeat:no-repeat}
-#win .dd option{background:#2e2a5c;color:#fff}
+#win .dd option{background:var(--white);color:var(--ink)}
 #win .res{display:flex;align-items:center;justify-content:flex-end;gap:10px;margin-top:6px}
-#win .kills{font-family:var(--f-num);font-size:52px;line-height:1;color:var(--d-num)}
-#win .hint{margin:-4px 0 0;font-size:12.5px;font-weight:500;color:rgba(255,255,255,.82);text-align:right;font-family:var(--f-num);letter-spacing:.02em}
+#win .kills{font-family:var(--f-num);font-size:52px;line-height:1;color:var(--coral-ink)}
+#win .hint{margin:-4px 0 0;font-size:12.5px;font-weight:600;color:var(--muted);text-align:right;font-family:var(--f-num);letter-spacing:.02em}
 /* スコア表 */
 #win .score{width:100%;border-collapse:collapse;font-family:var(--f-num);font-size:16px;font-variant-numeric:tabular-nums}
-#win .score th{font-family:var(--f-body);font-size:12px;font-weight:500;color:rgba(255,255,255,.6);text-align:left;padding:0 6px 8px}
-#win .score td{padding:8px 6px;border-top:1px solid rgba(255,255,255,.1);font-weight:600}
+#win .score th{font-family:var(--f-body);font-size:12px;font-weight:800;color:var(--muted);text-align:left;padding:0 6px 8px}
+#win .score td{padding:8px 6px;border-top:1.5px dashed var(--line);font-weight:600}
 #win .score th:last-child,#win .score td:last-child{text-align:right}
-#win .score td:last-child{color:var(--d-num);font-weight:700}
-#win .score tfoot td{border-top:1.5px solid rgba(255,255,255,.35)}
+#win .score td:last-child{color:var(--coral-ink);font-weight:700}
+#win .score tfoot td{border-top:2px solid var(--ink)}
 @keyframes win-dlgPop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
 @keyframes win-sheetUp{from{transform:translateY(100%)}to{transform:none}}
 @media (max-width:600px){
-  #win .dlg{width:100%;margin:auto 0 0;border-radius:26px 26px 0 0}
+  #win .dlg{width:100%;margin:auto 0 0;border-width:3px 0 0;border-radius:26px 22px 0 0;box-shadow:0 -6px 0 var(--coral)}
   #win .dlg[open]{animation:win-sheetUp .32s cubic-bezier(.2,.9,.3,1)}
   #win .dlg-in{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
 }
 /* 窓が開いている間は、後ろのページがスクロールしないように */
 :root:has(#win .dlg:modal){overflow:hidden}
 
-/* ---- Day 3 / グループ ---- */
-#win .divider{margin:22px -20px 0;padding-top:8px;padding-inline:20px;border-top:2px solid var(--sep)}
-/* DAY 3 から下は折りたたみ。閉じていても、決勝へ向かう矢印の上の方だけはちらっと見せる */
-/* 開け閉め（.fold）の見た目は css/base.css に。ここはセクション1だけの調整 */
-#win .zone2{position:relative;margin-inline:-20px;padding-inline:20px;border-top:2px solid var(--sep)}
-#win .zone2 .day{position:absolute;left:20px;top:8px}
+/* ---- 決勝までの道（DAY 3 / DAY 1–2 の図）。箱は白と黒、Top は赤・Bot は青 ---- */
+#win .zone2{position:relative;margin-inline:-24px;padding-inline:24px;border-top:2px dashed var(--line)}
+#win .zone2 .day{position:absolute;left:24px;top:10px}
 #win .bracket svg.lower{margin-top:-2px}
 #win .bracket svg{width:100%;max-width:640px;height:auto;display:block;margin:0 auto;overflow:visible}
 #win .bracket svg.m{display:none;max-width:400px}
-@media (max-width:600px){#win .bracket svg.d{display:none} #win .bracket svg.m{display:block}}
-#win .nd rect{fill:var(--node);stroke:var(--node-line);stroke-width:1}
-#win .bracket svg.d .nd rect{fill:url(#win-gN)} #win .bracket svg.m .nd rect{fill:url(#win-gN2)}
-#win .nd .t1{font-family:var(--f-body);font-weight:700;font-size:20px;fill:var(--ink)}
-#win .nd .t2{font-family:var(--f-body);font-weight:500;font-size:13px;fill:var(--muted)}
-#win .bracket .nd.out rect{fill:var(--bot-soft);stroke:none}
+@media (max-width:600px){#win .bracket svg.d{display:none} #win .bracket svg.m{display:block} #win .zone2{margin-inline:-12px;padding-inline:12px} #win .zone2 .day{left:12px}}
+#win .nd rect{fill:var(--white);stroke:var(--ink);stroke-width:2}
+#win .nd .t1{font-family:var(--f-head);font-size:20px;fill:var(--ink)}
+#win .nd .t2{font-family:var(--f-body);font-weight:700;font-size:12px;fill:var(--muted)}
+#win .bracket .nd.out rect{fill:var(--bot-soft);stroke:var(--bot)}
 #win .nd.out .t1{fill:var(--bot)}
-#win .ar{fill:none;stroke-width:1.2;stroke-linecap:round;stroke-dasharray:4 6}
+#win .ar{fill:none;stroke-width:2;stroke-linecap:round;stroke-dasharray:5 6}
 @media (prefers-reduced-motion:no-preference){#win .ar{animation:win-flow 2.6s linear infinite}}
-@keyframes win-flow{to{stroke-dashoffset:-20}}
-#win .ar.t{stroke:var(--top);filter:drop-shadow(0 0 2px var(--top))} #win .ar.b{stroke:var(--bot);filter:drop-shadow(0 0 2px var(--bot))}
-#win .tag rect{stroke-width:1}
+@keyframes win-flow{to{stroke-dashoffset:-22}}
+#win .ar.t{stroke:var(--top)} #win .ar.b{stroke:var(--bot)}
+#win .tag rect{stroke-width:2}
 #win .tag.t rect{fill:var(--top-soft);stroke:var(--top)} #win .tag.b rect{fill:var(--bot-soft);stroke:var(--bot)}
 #win .tag text{font-family:var(--f-num);font-weight:700;font-size:14px}
 #win .tag.t text{fill:var(--top)} #win .tag.b text{fill:var(--bot)}
-#win .legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;font-size:13px;color:var(--muted);margin-top:4px}
+#win .legend{display:flex;flex-wrap:wrap;gap:6px 16px;justify-content:center;font-size:13px;font-weight:700;color:var(--muted);margin:6px 0 10px}
 #win .legend span{display:flex;align-items:center;gap:6px}
-#win .chip rect{fill:var(--chip);stroke:var(--node-line);stroke-width:1}
+#win .legend i{width:22px;height:4px;border-radius:2px}
+#win .chip rect{fill:var(--paper);stroke:var(--ink);stroke-width:1.5}
 #win .chip text{font-family:var(--f-num);font-size:13px;font-weight:600;fill:var(--ink)}
 #win .gdl{font-family:var(--f-num);font-size:12px;font-weight:600;letter-spacing:.1em;fill:var(--muted)}
 #win .gnote{font-family:var(--f-body);font-size:12px;fill:var(--muted)}
-#win .legend i{width:22px;height:4px;border-radius:2px}
-
-@media (max-width:960px){
-  #win .tools{--cw:84px}
-}
 
 /* ---- マッチポイント形式って？（3チームの点数が伸びていくスライド）---- */
 #win .mpx{margin-top:14px}

@@ -1,4 +1,4 @@
-/* セクション1「どうなったら勝ち？」の動き（マッチポイント計算機・矢印の位置合わせ・カードから開く窓・マッチポイント形式のスライド） */
+/* 01「どうなったら勝ち？」の動き（マッチポイント計算機・矢印の位置合わせ・カードから開く窓・決勝までの道・マッチポイント形式のスライド） */
 (function(){
 const $ = id => document.getElementById(id);
 const PLACE = [12,9,7,5,4,3,3,2,2,2,1,1,1,1,1,0,0,0,0,0];
@@ -46,7 +46,8 @@ pSel.addEventListener("change", draw);
 draw();
 
 function linkFinals(){
-  const r = $("win-fpill").getBoundingClientRect();
+  // 矢印は、決勝の帯の下のふちの真ん中へ向かう
+  const r = $("win-fold-btn").getBoundingClientRect();
   document.querySelectorAll("#win .bracket svg.top").forEach(svg=>{
     if(!svg.getBoundingClientRect().width) return;
     const m = svg.getScreenCTM(); if(!m) return;
@@ -83,17 +84,20 @@ document.querySelectorAll("#win [data-tab]").forEach(b => b.addEventListener("cl
 ["calc","table"].forEach(t => $("win-tab-" + t).addEventListener("click", () => setTab(t)));
 dlg.addEventListener("click", e => { if(e.target === dlg || e.target.closest("[data-close]")) dlg.close(); });
 if(document.fonts) document.fonts.ready.then(linkFinals);
-/* DAY 3 から下の折りたたみ */
+/* 決勝の帯を押すと、下に「決勝までの道」がたてにひらく */
 const fold = $("win-fold"), foldBtn = $("win-fold-btn");
 function setFold(on){
   fold.classList.toggle("open", on); foldBtn.setAttribute("aria-expanded", on);
+  // 閉じている間は、中身をキーボードで選べないように
+  $("win-fold-body").inert = !on;
   linkFinals();
-  // 下の方で閉じたときは、中身が縮んで迷子にならないよう DAY 3 の行まで戻る
+  // 下の方で閉じたときは、中身が縮んで迷子にならないよう決勝の帯まで戻る
   if(!on && fold.getBoundingClientRect().top < 0) fold.scrollIntoView({block:"start"});
 }
-fold.querySelector(".fold-head").addEventListener("click", () => setFold(!fold.classList.contains("open")));
+foldBtn.addEventListener("click", () => setFold(!fold.classList.contains("open")));
+$("win-fold-body").inert = true;
 fold.querySelector(".fold-foot").addEventListener("click", () => setFold(false));
-if(window.ResizeObserver) new ResizeObserver(linkFinals).observe(document.querySelector("#win .sheet"));
+if(window.ResizeObserver) new ResizeObserver(linkFinals).observe($("win"));
 /* マッチポイント形式のスライド：0pt から8試合。6試合目で2チーム点灯、7・8試合目で CAT が連続チャンピオンの逆転優勝。
    基本は自動で進み、一時停止・試合ボタンで好きな試合・最初からもできる */
 (() => {
@@ -406,6 +410,22 @@ if(window.ResizeObserver) new ResizeObserver(linkFinals).observe(document.queryS
     if(!reduce) play();
   });
   $("win-mpx-pause").addEventListener("click", () => playing ? pause() : play());
+  /* スライドは窓で見る。サムネを押したら窓をひらいてすぐ再生、とじたら一時停止 */
+  const vid = $("win-vid");
+  function openVid(autoplay){
+    if(!vid.open) vid.showModal();
+    // 窓が閉じている間は大きさが測れないので、ひらいてから串の形などを作り直す
+    dispatchEvent(new Event("resize"));
+    if(autoplay && !board.classList.contains("started")) $("win-mpx-start").click();
+  }
+  $("win-vid-open").addEventListener("click", () => openVid(true));
+  vid.addEventListener("click", e => { if(e.target === vid || e.target.closest("#win-vid > [data-close]")) vid.close(); });
+  vid.addEventListener("close", () => { if(playing) pause(); });
+  // 共有されたリンク（…#win-mpx）から来たら、スタート画面の窓をひらいておく
+  if(location.hash === "#win-mpx") openVid(false);
+  // サムネの長さ表示：最初から最後のフキダシを読み終わるまで
+  const total = SCORES[0].reduce((t, _, i) => t + delay(i), 0);
+  $("win-vid-len").textContent = `${Math.floor(total / 60000)}:${String(Math.round(total / 1000) % 60).padStart(2, "0")}`;
   // 共有：スマホはいつものシェア画面、それ以外はリンクをコピー。リンクはこのスライドの位置に飛ぶ
   const toast = $("win-mpx-toast");
   let toastTimer = 0;
