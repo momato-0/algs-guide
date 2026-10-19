@@ -407,27 +407,28 @@ if(window.ResizeObserver) new ResizeObserver(linkFinals).observe($("win"));
   function pause(){
     playing = false; clearTimeout(timer); freezeProg(); board.classList.add("paused"); $("win-mpx-pause").setAttribute("aria-label", "再生");
   }
-  $("win-mpx-start").addEventListener("click", () => {
+  // はじめる（サムネを押して窓がひらいたら、すぐに）
+  function start(){
     board.classList.add("started");
     // S の丸も、空っぽから満たしはじめる
     bar.style.setProperty("--mxp", "0px");
     setSay(0, true);
     if(!reduce) play();
-  });
+  }
   $("win-mpx-pause").addEventListener("click", () => playing ? pause() : play());
   /* スライドは窓で見る。サムネを押したら窓をひらいてすぐ再生、とじたら一時停止 */
   const vid = $("win-vid");
-  function openVid(autoplay){
+  function openVid(){
     if(!vid.open) vid.showModal();
     // 窓が閉じている間は大きさが測れないので、ひらいてから串の形などを作り直す
     dispatchEvent(new Event("resize"));
-    if(autoplay && !board.classList.contains("started")) $("win-mpx-start").click();
+    if(!board.classList.contains("started")) start();
   }
-  $("win-vid-open").addEventListener("click", () => openVid(true));
+  $("win-vid-open").addEventListener("click", openVid);
   vid.addEventListener("click", e => { if(e.target === vid || e.target.closest("#win-vid > [data-close]")) vid.close(); });
   vid.addEventListener("close", () => { if(playing) pause(); });
-  // 共有されたリンク（…#win-mpx）から来たら、スタート画面の窓をひらいておく
-  if(location.hash === "#win-mpx") openVid(false);
+  // 共有されたリンク（…#win-mpx）から来たら、窓をひらいて再生する
+  if(location.hash === "#win-mpx") openVid();
   // サムネの長さ表示：最初から最後のフキダシを読み終わるまで
   const total = SCORES[0].reduce((t, _, i) => t + delay(i), 0);
   $("win-vid-len").textContent = `${Math.floor(total / 60000)}:${String(Math.round(total / 1000) % 60).padStart(2, "0")}`;

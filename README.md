@@ -24,4 +24,3 @@ ALGS をもっと気軽に観るための、ファンが作った非公式ガイ
 ## 素材のクレジット
 
 - マッチポイント形式のスライドのアイコン（img/team-apple.png・team-beer.png・team-cat.png）：Flaticon（Magnific）。クレジットはページ下のフッター（Thanks to）に表示
-- スライドのスタート画面のタイトル（img/s1-txt-1〜4.svg）：Haramase-Nyanko font by Haru Inatsuka（アウトライン化）。クレジットはページ下のフッター（Thanks to）に表示

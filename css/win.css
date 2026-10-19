@@ -19,6 +19,9 @@
 #win .video-copy{position:absolute;top:32%;left:8%;display:block;rotate:-2deg}
 #win .video-copy > span{position:relative;top:-50px;display:block;width:fit-content;margin-bottom:7px;padding:5px 12px;color:var(--ink);background:var(--yellow);font-size:19px;font-weight:800}
 #win .video-copy strong{position:relative;top:-40px;display:block;font-family:var(--f-head);font-size:clamp(2.1rem,4.3vw,4.4rem);font-weight:400;line-height:1.08;letter-spacing:-.06em}
+/* 「とは」は小さく、「？」は中くらいにして、「マッチポイント形式」を主役に */
+#win .video-copy .toha{font-size:.62em}
+#win .video-copy .q{font-size:.8em}
 #win .video-play{position:absolute;right:12%;bottom:18%;width:88px;height:88px;display:grid;place-items:center;background:var(--coral);border:3px solid var(--paper);border-radius:50% 46% 53% 48%;box-shadow:4px 4px 0 var(--paper);transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out)}
 #win .video-feature:hover .video-play{transform:rotate(7deg) translate(3px,3px);box-shadow:1px 1px 0 var(--paper)}
 #win .video-play i{display:block;width:0;height:0;margin-left:6px;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid var(--paper)}
@@ -60,7 +63,11 @@
 #win .tournament-title .dt{font-family:var(--f-body);font-weight:800;font-size:1.05em;letter-spacing:.03em;margin-inline:.03em}
 /* 改行はまとまりの中では禁止して、<wbr> の所（「日時」と「決勝」の間）だけで改行する */
 #win .tournament-title .when{white-space:nowrap}
+/* 「決勝」を大きく太く */
 #win .tournament-title .when:first-child{margin-right:.3em}
+#win .tournament-title .when:last-child{font-size:1.3em;font-weight:800}
+/* 「(月)」はカッコが数字より下にはみ出すので、少し上げて数字と下をそろえる（ブラウザで測った値） */
+#win .tournament-title .wd{position:relative;top:-.09em}
 #win .tournament-title .til{margin-left:.05em;font-size:.7em}
 #win .tournament-title > small{margin-top:5px;font-size:15px;font-weight:700;word-break:auto-phrase;text-wrap:balance}
 #win .accordion-action{display:flex;align-items:center;gap:13px;font-size:15px;font-weight:800}
@@ -385,36 +392,7 @@
 @keyframes win-mxFlash{0%{opacity:1;scale:.8}100%{opacity:0;scale:1.35}}
 /* 優勝の紙ふぶき（canvas）。ボードいっぱいに重ねて、クリックは下に通す */
 #win .mpx-fx{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
-/* 始まる前は、ボードの上にスタートボタン */
-#win .mpx-start{--k:1;position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:clamp(18px,5vw,56px);padding:16px;border:0;border-radius:inherit;
-  background:rgba(8,24,20,.38);-webkit-backdrop-filter:blur(7px) saturate(1.15);backdrop-filter:blur(7px) saturate(1.15);color:#fff;font:inherit;cursor:pointer;transition:opacity .3s,visibility .3s}
-#win .mpx-board.started .mpx-start{opacity:0;visibility:hidden}
-/* タイトル（haramasenyanko のSVG）。--k は SVG 1単位あたりの大きさ。4つとも同じ文字サイズで書き出してあるので、同じ倍率で並べる */
-#win .mpx-st-title{order:2;display:flex;flex-direction:column;align-items:flex-start;rotate:-8deg;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35))}
-#win .mpx-st-title img{display:block;width:auto}
-#win .mpx-st-title .ln1{display:flex;align-items:flex-end;gap:calc(4px * var(--k))}
-#win .mpx-st-title .w1{height:calc(61.4px * var(--k))}
-#win .mpx-st-title .w2{height:calc(62.08px * var(--k))}
-#win .mpx-st-title .w3{height:calc(80.76px * var(--k));margin:calc(-4px * var(--k)) 0 0 calc(200px * var(--k))}
-#win .mpx-st-title .w4{height:calc(44.61px * var(--k));margin:calc(4px * var(--k)) 0 0 calc(350px * var(--k))}
-/* ピンクの再生ボタン。ゆっくり脈打って「押してね」 */
-#win .mpx-st-play{order:1;position:relative;flex:none;width:calc(84px * var(--k));height:calc(84px * var(--k));background:url(../img/s1-start-btn.svg) center/100% 100% no-repeat;filter:drop-shadow(0 5px 8px rgba(0,0,0,.35));transition:scale .2s cubic-bezier(.3,1.6,.5,1)}
-#win .mpx-st-play::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #f50c76;animation:win-mxPulse 1.8s ease-out infinite}
-@keyframes win-mxPulse{0%{opacity:.9;scale:1}100%{opacity:0;scale:1.55}}
-#win .mpx-start:hover .mpx-st-play{scale:1.08}
-#win .mpx-start:focus-visible{outline:3px solid #fff;outline-offset:-6px}
-/* PC は、タイトルを左上へ、再生ボタンを右下へずらして、斜めに重ねる配置に（スマホは縦に積むのでずらさない） */
-#win .mpx-st-title{translate:-47px -20px}
-#win .mpx-st-play{translate:55px 70px}
 @media (max-width:600px){
-  #win .mpx-start{--k:.62;flex-direction:column}
-  #win .mpx-st-title{order:1;rotate:-6deg}
-  #win .mpx-st-title .ln1{flex-direction:column;align-items:flex-start;gap:0}
-  #win .mpx-st-title .w2{margin-left:calc(60px * var(--k))}
-  #win .mpx-st-title .w3{margin:0 0 0 calc(150px * var(--k))}
-  #win .mpx-st-title .w4{margin:calc(10px * var(--k)) 0 0 calc(190px * var(--k))}
-  #win .mpx-st-play{order:2}
-  #win .mpx-st-title,#win .mpx-st-play{translate:none}
   #win .mpx-board{--icon:42px;--dot:32px;padding:14px 12px 10px}
   #win .mpx-dot{font-size:14px}
   #win .mpx-gain{font-size:15px} #win .mpx-why{font-size:10px;padding:1px 6px}
