@@ -9,7 +9,7 @@
 #win .feature-number{font-family:var(--f-head);font-size:4.4rem;line-height:.85}
 /* 縦の英字ラベルは、ほかのカード（.card-english）と同じ右上に */
 #win .feature-english{position:absolute;top:30px;right:25px;font-size:12px;font-weight:800;letter-spacing:.16em;writing-mode:vertical-rl}
-#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-body);font-size:clamp(1.9rem,3.8vw,2.7rem);line-height:1.2;letter-spacing:-.04em;}
+#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-body);font-size:clamp(1.9rem,3.8vw,2.7rem);font-weight:800;line-height:1.2;letter-spacing:-.04em}
 #win .feature-guide-heading p{margin:0;font-size:16px;font-weight:700}
 #win .feature-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,.85fr);gap:18px}
 #win .feature-label{display:block;font-size:13px;font-weight:800;letter-spacing:.16em;opacity:.82}
@@ -20,7 +20,7 @@
 #win .video-copy > span{position:relative;top:-50px;display:block;width:fit-content;margin-bottom:7px;padding:5px 12px;color:var(--ink);background:var(--yellow);font-size:19px;font-weight:800}
 #win .video-copy strong{position:relative;top:-40px;display:block;font-family:var(--f-head);font-size:clamp(2.1rem,4.3vw,4.4rem);font-weight:400;line-height:1.08;letter-spacing:-.06em}
 /* 「とは」は小さく、「？」は中くらいにして、「マッチポイント形式」を主役に */
-#win .video-copy .toha{font-size:.62em}
+#win .video-copy .toha{margin-left:.5em;font-size:.62em}
 #win .video-copy .q{font-size:.8em}
 #win .video-play{position:absolute;right:12%;bottom:18%;width:88px;height:88px;display:grid;place-items:center;background:var(--coral);border:3px solid var(--paper);border-radius:50% 46% 53% 48%;box-shadow:4px 4px 0 var(--paper);transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out)}
 #win .video-feature:hover .video-play{transform:rotate(7deg) translate(3px,3px);box-shadow:1px 1px 0 var(--paper)}
@@ -30,7 +30,8 @@
 #win .video-caption{position:absolute;left:24px;bottom:20px;font-size:14px;font-weight:700;letter-spacing:.05em;opacity:.75}
 /* 便利ツール：カードにせず、大きいアイコンと名前を並べる。マウスをのせる・キーボードで選ぶと、指がアイコンにのる */
 #win .tool-cluster{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:4px 0 4px 10px}
-#win .tools-title{margin:0 0 4px 6px;color:var(--paper);font-family:var(--f-body);font-size:1.5rem;font-weight:800;line-height:1.2}
+/* 「01 どうなったら勝ち？」の見出しと区別がつくよう、クリームの字のまわりを深緑でふちどる */
+#win .tools-title{margin:0 0 4px 6px;color:var(--paper);text-shadow:-2px -2px 0 var(--ink),2px -2px 0 var(--ink),-2px 2px 0 var(--ink),2px 2px 0 var(--ink),0 -2px 0 var(--ink),0 2px 0 var(--ink),-2px 0 0 var(--ink),2px 0 0 var(--ink);font-family:var(--f-body);font-size:1.5rem;font-weight:800;line-height:1.2}
 #win .tool{position:relative;display:grid;grid-template-columns:120px 1fr;align-items:center;gap:20px;min-height:150px;padding:12px 16px;text-align:left;background:rgba(255,253,247,.14);border:0;border-radius:22px 16px 25px 18px;transition:background-color .18s var(--ease-out)}
 #win .tool:hover{background:rgba(255,253,247,.24)}
 #win .tool-art{position:relative;display:grid;place-items:center;height:140px}
@@ -293,7 +294,7 @@
 /* うしろ幕。穴の形は js が SVG のマスクで作る */
 #win .mpx-dim{position:absolute;inset:0;border-radius:12px;background:rgba(8,24,20,.55);-webkit-mask:var(--hole,none) 0 0/100% 100% no-repeat;mask:var(--hole,none) 0 0/100% 100% no-repeat}
 /* フキダシの高さは、穴にかぶらない所を js が決める（--sy） */
-#win .mpx-say p{position:absolute;left:50%;top:var(--sy,50%);translate:-50% 0;width:max-content;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:#fff;color:var(--ink);font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);transition:opacity .3s}
+#win .mpx-say p{position:absolute;left:50%;top:var(--sy,50%);translate:-50% 0;width:max-content;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:var(--white);color:var(--ink);font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);transition:opacity .3s}
 #win .mpx-say.show p{animation:win-mxSay .4s cubic-bezier(.3,1.5,.5,1)}
 /* 続きのフキダシに切りかえる間は、フキダシだけ消す（うしろ幕は出したまま） */
 #win .mpx-say.next p{opacity:0}
