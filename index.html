@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@500;700;800&family=Yusei+Magic&family=Chakra+Petch:wght@500;600;700&display=swap">
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/win.css">
+  <!-- ダークモード（色は css/dark.css、切りかえは js/theme-try.js） -->
+  <link rel="stylesheet" href="css/dark.css">
+  <script src="js/theme-try.js"></script>
 </head>
 
 <body>
@@ -110,7 +113,6 @@
 
           <div class="feature-layout">
             <button type="button" class="video-feature" id="win-vid-open">
-              <span class="feature-label">SLIDE</span>
               <span class="video-copy"><span>1分でわかる</span><strong>マッチポイント<br>形式とは？</strong></span>
               <span class="video-play" aria-hidden="true"><i></i></span>
               <span class="video-duration" id="win-vid-len"></span>
@@ -137,14 +139,16 @@
               </button>
               <div class="tournament-content" id="win-fold-body">
                 <div>
+                  <!-- ひらいているとき、閉じていたときのチラ見えと同じ所を押すと閉じる（押せる範囲を開け閉めで同じにする） -->
+                  <span class="fold-hit" aria-hidden="true"></span>
                   <div class="road">
                     <span class="day">DAY 3 ・ 生き残れ</span>
             <section class="bracket">
               <svg class="top d" viewBox="0 0 640 392" role="img" aria-labelledby="win-b-title">
             <title id="win-b-title">グループステージから決勝へ、生き残りを賭けた戦い。上位はピンクの線、下位は水色の線を辿る</title>
             <defs>
-              <marker id="win-mt" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--top)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
-              <marker id="win-mb" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--bot)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              <marker id="win-mt" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--top-line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              <marker id="win-mb" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--bot-line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
               <linearGradient id="win-gN" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--node-top)"/><stop offset="1" style="stop-color:var(--node-bot)"/></linearGradient>
             </defs>
 
@@ -176,8 +180,8 @@
           </svg>
               <svg class="top m" viewBox="0 0 360 360" role="img" aria-label="グループステージから決勝へ、生き残りを賭けた戦い。上位はピンクの線、下位は水色の線を辿る">
             <defs>
-              <marker id="win-mt2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--top)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
-              <marker id="win-mb2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--bot)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              <marker id="win-mt2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--top-line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
+              <marker id="win-mb2" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="9" markerHeight="9" orient="auto-start-reverse"><path d="M1 1L8 5L1 9" fill="none" stroke="var(--bot-line)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></marker>
               <linearGradient id="win-gN2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" style="stop-color:var(--node-top)"/><stop offset="1" style="stop-color:var(--node-bot)"/></linearGradient>
             </defs>
             <path class="ar t" data-link="w" data-mode="m" data-sx="32" data-sy="240" d="M32 240 L32 0" marker-end="url(#win-mt2)"/>
@@ -216,7 +220,7 @@
               <g class="tag b"><rect x="212" y="426" width="72" height="26" rx="13"/><text x="248" y="444" text-anchor="middle">Bot 20</text></g>
             </svg>
               </div>
-              <div class="legend"><span><i style="background:var(--top)"></i>Top：上位</span><span><i style="background:var(--bot)"></i>Bot：下位</span></div>
+              <div class="legend"><span><i style="background:var(--top-line)"></i>Top：上位</span><span><i style="background:var(--bot-line)"></i>Bot：下位</span></div>
             </section>
                   </div>
                   <button type="button" class="fold-foot">とじる<i aria-hidden="true"></i></button>
@@ -304,46 +308,46 @@
                       </thead>
                       <tbody>
                         <tr>
-                          <td>1位</td>
-                          <td>12pt</td>
+                          <td>1<small>位</small></td>
+                          <td>12<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>2位</td>
-                          <td>9pt</td>
+                          <td>2<small>位</small></td>
+                          <td>9<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>3位</td>
-                          <td>7pt</td>
+                          <td>3<small>位</small></td>
+                          <td>7<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>4位</td>
-                          <td>5pt</td>
+                          <td>4<small>位</small></td>
+                          <td>5<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>5位</td>
-                          <td>4pt</td>
+                          <td>5<small>位</small></td>
+                          <td>4<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>6–7位</td>
-                          <td>3pt</td>
+                          <td>6–7<small>位</small></td>
+                          <td>3<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>8–10位</td>
-                          <td>2pt</td>
+                          <td>8–10<small>位</small></td>
+                          <td>2<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>11–15位</td>
-                          <td>1pt</td>
+                          <td>11–15<small>位</small></td>
+                          <td>1<small>pt</small></td>
                         </tr>
                         <tr>
-                          <td>16–20位</td>
-                          <td>0pt</td>
+                          <td>16–20<small>位</small></td>
+                          <td>0<small>pt</small></td>
                         </tr>
                       </tbody>
                       <tfoot>
                         <tr>
-                          <td>1キル</td>
-                          <td>1pt</td>
+                          <td>1<small>キル</small></td>
+                          <td>1<small>pt</small></td>
                         </tr>
                       </tfoot>
                     </table>

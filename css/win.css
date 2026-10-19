@@ -9,20 +9,16 @@
 #win .feature-number{font-family:var(--f-head);font-size:4.4rem;line-height:.85}
 /* 縦の英字ラベルは、ほかのカード（.card-english）と同じ右上に */
 #win .feature-english{position:absolute;top:30px;right:25px;font-size:12px;font-weight:800;letter-spacing:.16em;writing-mode:vertical-rl}
-#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-head);font-size:clamp(1.8rem,3vw,3rem);font-weight:400;letter-spacing:-.04em}
+#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-body);font-size:clamp(1.9rem,3.8vw,2.7rem);line-height:1.2;letter-spacing:-.04em;}
 #win .feature-guide-heading p{margin:0;font-size:16px;font-weight:700}
 #win .feature-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,.85fr);gap:18px}
 #win .feature-label{display:block;font-size:13px;font-weight:800;letter-spacing:.16em;opacity:.82}
 #win .video-feature,#win .tool,#win .tournament-trigger,#win .fold-foot{font:inherit;color:inherit;cursor:pointer}
-/* スライドのサムネ */
-#win .video-feature{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:385px;padding:24px;overflow:hidden;text-align:left;color:var(--paper);background:var(--ink);border:3px solid var(--ink);border-radius:22px 16px 27px 18px;isolation:isolate}
-#win .video-feature::before,#win .video-feature::after{content:"";position:absolute;z-index:-1;border:3px solid var(--paper);opacity:.18;border-radius:47% 53% 42% 58%;transition:transform .3s var(--ease-out)}
-#win .video-feature::before{width:420px;height:420px;top:-220px;right:-120px}
-#win .video-feature::after{width:260px;height:260px;left:-100px;bottom:-170px}
-#win .video-feature:hover::before{transform:scale(1.15) rotate(15deg)}
+/* スライドのサムネ：スライドの中身をぼかした絵を敷いて、「なんだろう？」と押したくなるように */
+#win .video-feature{position:relative;display:flex;flex-direction:column;align-items:flex-start;min-height:385px;padding:24px;overflow:hidden;text-align:left;color:var(--paper);background:var(--ink) url(../img/s1-thumb-blur.webp) center/cover no-repeat;border:3px solid var(--ink);border-radius:22px 16px 27px 18px;isolation:isolate}
 #win .video-copy{position:absolute;top:32%;left:8%;display:block;rotate:-2deg}
-#win .video-copy > span{display:block;width:fit-content;margin-bottom:7px;padding:5px 12px;color:var(--ink);background:var(--yellow);font-size:19px;font-weight:800}
-#win .video-copy strong{display:block;font-family:var(--f-head);font-size:clamp(2.1rem,4.3vw,4.4rem);font-weight:400;line-height:1.08;letter-spacing:-.06em}
+#win .video-copy > span{position:relative;top:-50px;display:block;width:fit-content;margin-bottom:7px;padding:5px 12px;color:var(--ink);background:var(--yellow);font-size:19px;font-weight:800}
+#win .video-copy strong{position:relative;top:-40px;display:block;font-family:var(--f-head);font-size:clamp(2.1rem,4.3vw,4.4rem);font-weight:400;line-height:1.08;letter-spacing:-.06em}
 #win .video-play{position:absolute;right:12%;bottom:18%;width:88px;height:88px;display:grid;place-items:center;background:var(--coral);border:3px solid var(--paper);border-radius:50% 46% 53% 48%;box-shadow:4px 4px 0 var(--paper);transition:transform .18s var(--ease-out),box-shadow .18s var(--ease-out)}
 #win .video-feature:hover .video-play{transform:rotate(7deg) translate(3px,3px);box-shadow:1px 1px 0 var(--paper)}
 #win .video-play i{display:block;width:0;height:0;margin-left:6px;border-top:12px solid transparent;border-bottom:12px solid transparent;border-left:20px solid var(--paper)}
@@ -31,7 +27,7 @@
 #win .video-caption{position:absolute;left:24px;bottom:20px;font-size:14px;font-weight:700;letter-spacing:.05em;opacity:.75}
 /* 便利ツール：カードにせず、大きいアイコンと名前を並べる。マウスをのせる・キーボードで選ぶと、指がアイコンにのる */
 #win .tool-cluster{display:flex;flex-direction:column;justify-content:center;gap:8px;padding:4px 0 4px 10px}
-#win .tools-title{margin:0 0 4px 6px;font-family:var(--f-head);font-size:1.6rem;line-height:1.2}
+#win .tools-title{margin:0 0 4px 6px;color:var(--paper);font-family:var(--f-body);font-size:1.5rem;font-weight:800;line-height:1.2}
 #win .tool{position:relative;display:grid;grid-template-columns:120px 1fr;align-items:center;gap:20px;min-height:150px;padding:12px 16px;text-align:left;background:rgba(255,253,247,.14);border:0;border-radius:22px 16px 25px 18px;transition:background-color .18s var(--ease-out)}
 #win .tool:hover{background:rgba(255,253,247,.24)}
 #win .tool-art{position:relative;display:grid;place-items:center;height:140px}
@@ -53,11 +49,12 @@
 /* マウスがない（指でさわる）画面では、のせる動きがないので、計算機に最初から指をのせて「押せる」と伝える */
 @media (hover:none){#win .calc-tool .tool-hand{opacity:1;translate:0 0}}
 /* 決勝の帯と、たてにひらく決勝までの道 */
-#win .tournament-feature{grid-column:1/-1;overflow:hidden;background:var(--yellow);border:3px solid var(--ink);border-radius:19px 27px 20px 25px}
+/* 外がわの地は中身（決勝までの道）と同じ色にする。黄色だと、角丸で切ったふちに黄色がうすくにじんで見えるので、黄色は帯（ボタン）にだけ敷く */
+#win .tournament-feature{grid-column:1/-1;overflow:hidden;background:var(--paper);border:3px solid var(--ink);border-radius:19px 27px 20px 25px}
 /* PC では、文字の左に帯の幅の 30% くらいの空きをとる（真ん中合わせだと右のボタンとぶつかるので） */
-#win .tournament-trigger{width:100%;min-height:110px;padding:20px 26px 20px clamp(26px,120% - 560px,30%);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;text-align:left;background:transparent;border:0}
+#win .tournament-trigger{width:100%;min-height:110px;padding:20px 26px 20px clamp(26px,120% - 560px,30%);display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:24px;text-align:left;background:var(--yellow);border:0}
 #win .tournament-title strong,#win .tournament-title > small{display:block}
-#win .tournament-title strong{font-family:var(--f-head);font-size:clamp(1.4rem,2.6vw,2rem);font-weight:400;line-height:1.2}
+#win .tournament-title strong{font-family:var(--f-body);font-size:clamp(1.4rem,2.6vw,2rem);font-weight:400;line-height:1.2}
 #win .tournament-title strong small{font-size:.6em}
 /* 日付と時刻の数字は、見出しの書体だと細くて読みにくいので、本文の書体（M PLUS Rounded）の太字にする。「〜」は小さく */
 #win .tournament-title .dt{font-family:var(--f-body);font-weight:800;font-size:1.05em;letter-spacing:.03em;margin-inline:.03em}
@@ -81,6 +78,9 @@
 /* 閉じているときは、上の方（矢印）だけチラ見せして、下は地の色にとけて消える。押すとひらく */
 #win .tournament-feature:not(.open){cursor:pointer}
 #win .tournament-feature:not(.open) .tournament-content > div{min-height:72px}
+#win .fold-hit{position:absolute;inset:0 0 auto;z-index:2;height:69px;cursor:pointer}
+/* チラ見えの所にマウスをのせたときも、帯の丸いボタンが反応する */
+#win .tournament-feature:not(.open):hover .accordion-action i,#win .tournament-feature:has(.fold-hit:hover) .accordion-action i{background:color-mix(in srgb,var(--ink) 80%,var(--coral))}
 #win .tournament-content > div::after{content:"";position:absolute;inset:auto 0 0;height:56px;background:linear-gradient(rgba(246,240,228,0),var(--paper));pointer-events:none;transition:opacity .3s var(--ease-out)}
 #win .tournament-feature.open .tournament-content > div::after{opacity:0}
 #win .road > .day{transition:opacity .3s var(--ease-out)}
@@ -90,9 +90,12 @@
 #win .fold-foot{width:100%;display:flex;align-items:center;justify-content:flex-end;gap:13px;padding:12px 26px 16px;border:0;border-top:2px dashed var(--line);background:none;font-size:15px;font-weight:800}
 #win .fold-foot:hover i,#win .tournament-trigger:hover i{background:color-mix(in srgb,var(--ink) 80%,var(--coral))}
 /* スライドの窓 */
-#win .vid-dlg{width:min(780px,calc(100% - 24px));max-width:none;padding:10px;background:var(--paper);border:3px solid var(--ink);border-radius:25px 18px 29px 20px;box-shadow:10px 10px 0 var(--coral);overflow:visible}
+/* スライドの窓は、枠を付けずにスライドだけを出す（閉じるボタンだけ白ふちで右上に） */
+#win .vid-dlg{width:min(780px,calc(100% - 24px));max-width:none;padding:0;background:none;border:0;overflow:visible}
 #win .vid-dlg::backdrop{background:color-mix(in srgb,var(--ink) 82%,transparent);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 #win .vid-dlg .mpx{margin:0}
+/* 枠がないぶん、暗い後ろの幕との境目がわかるよう、ふちにうすいクリームの線と、サイトと同じクリームのうすいずらし影を置く */
+#win .vid-dlg .mpx-board{box-shadow:0 0 0 2px rgba(246,240,228,.35),8px 8px 0 rgba(246,240,228,.24)}
 :root:has(#win .vid-dlg:modal){overflow:hidden}
 @media (max-width:1000px){
   #win .feature-layout{grid-template-columns:minmax(0,1.15fr) minmax(330px,.85fr)}
@@ -115,7 +118,7 @@
   #win .feature-guide-heading{grid-template-columns:75px 1fr;gap:14px;align-items:center;margin-bottom:34px;padding-right:18px}
   #win .feature-number{font-size:3.2rem}
   #win .feature-english{top:14px;right:12px;font-size:11px;letter-spacing:.12em}
-  #win .feature-guide-heading h3{font-size:clamp(1.2rem,6.4vw,1.7rem)}
+  #win .feature-guide-heading h3{font-size:clamp(1.35rem,7vw,1.9rem)}
   #win .feature-guide-heading p{margin-top:5px;font-size:13px;line-height:1.5}
   #win .tournament-title > small{font-size:13px}
   #win .tournament-title strong{font-size:clamp(1.1rem,5.4vw,1.4rem)}
@@ -198,12 +201,21 @@
 #win .kills{font-family:var(--f-num);font-size:52px;line-height:1;color:var(--coral-ink)}
 #win .hint{margin:-4px 0 0;font-size:12.5px;font-weight:600;color:var(--muted);text-align:right;font-family:var(--f-num);letter-spacing:.02em}
 /* スコア表 */
-#win .score{width:100%;border-collapse:collapse;font-family:var(--f-num);font-size:16px;font-variant-numeric:tabular-nums}
-#win .score th{font-family:var(--f-body);font-size:12px;font-weight:800;color:var(--muted);text-align:left;padding:0 6px 8px}
+#win .score{width:100%;border-collapse:collapse;font-family:var(--f-num);font-size:20px;font-variant-numeric:tabular-nums}
+#win .score th{font-family:var(--f-body);font-size:14px;font-weight:800;color:var(--muted);text-align:left;padding:0 6px 8px}
 #win .score td{padding:8px 6px;border-top:1.5px dashed var(--line);font-weight:600}
 #win .score th:last-child,#win .score td:last-child{text-align:right}
 #win .score td:last-child{color:var(--coral-ink);font-weight:700}
 #win .score tfoot td{border-top:2px solid var(--ink)}
+/* スコア表の中身は、ライトでもダークでも深緑の地にクリームの字（順位とポイントを、黒板みたいにくっきり） */
+#win #win-pane-table .pan{background:var(--ink);color:var(--paper)}
+#win #win-pane-table .score th{color:rgba(246,240,228,.75)}
+#win #win-pane-table .score td{border-top-color:rgba(246,240,228,.2)}
+/* ポイントは黄色（深緑の地とのコントラスト 8.7:1） */
+#win #win-pane-table .score td:last-child{color:var(--yellow)}
+/* 「位」「pt」「キル」は小さくして、数字を主役に。数字との間は少しあける */
+#win .score td small{margin-left:.3em;font-size:.7em}
+#win #win-pane-table .score tfoot td{border-top-color:var(--paper)}
 @keyframes win-dlgPop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
 @keyframes win-sheetUp{from{transform:translateY(100%)}to{transform:none}}
 @media (max-width:600px){
@@ -229,7 +241,7 @@
 #win .ar{fill:none;stroke-width:2;stroke-linecap:round;stroke-dasharray:5 6}
 @media (prefers-reduced-motion:no-preference){#win .ar{animation:win-flow 2.6s linear infinite}}
 @keyframes win-flow{to{stroke-dashoffset:-22}}
-#win .ar.t{stroke:var(--top)} #win .ar.b{stroke:var(--bot)}
+#win .ar.t{stroke:var(--top-line)} #win .ar.b{stroke:var(--bot-line)}
 #win .tag rect{stroke-width:2}
 #win .tag.t rect{fill:var(--top-soft);stroke:var(--top)} #win .tag.b rect{fill:var(--bot-soft);stroke:var(--bot)}
 #win .tag text{font-family:var(--f-num);font-weight:700;font-size:14px}
@@ -245,9 +257,9 @@
 /* ---- マッチポイント形式って？（3チームの点数が伸びていくスライド）---- */
 #win .mpx{margin-top:14px}
 #win .mpx-h{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
-#win .mpx-board{--mx-bg:#5f26b8;--icon:52px;--dot:38px;position:relative;max-width:720px;margin:0 auto;padding:16px 18px 12px;border-radius:16px;
+#win .mpx-board{--mx-bg:#1d3531;--icon:52px;--dot:38px;position:relative;max-width:720px;margin:0 auto;padding:16px 18px 12px;border-radius:16px;
   /* 紙の質感（紫と合成ずみのシームレス画像）を並べて敷く。ただの背景なので、軽さ優先で 512px の画像を等倍で並べる。読みこむまでは同じ色の紫 */
-  background:var(--mx-bg) url(../img/s1-bg-seamless-75per.jpg) 0 0/512px 512px repeat;color:#fff;overflow:hidden;overflow:clip}
+  background:var(--mx-bg) url(../img/s1-bg-seamless-gr-75per.jpg) 0 0/512px 512px repeat;color:#fff;overflow:hidden;overflow:clip}
 /* タイトル：「決勝」と数字は大きく、「スタート」「試合目」は小さく。文字は詰めて、数字だけは少しゆとりを持たせる。
    高さは決めておく（中身が変わってもボードの高さが変わらないように） */
 #win .mpx-title{position:relative;top:-10px;display:flex;justify-content:center;align-items:baseline;gap:.08em;height:1.2em;padding-top:.17em;font-size:clamp(22px,4.4vw,32px);font-weight:900;line-height:1;letter-spacing:-.04em}
@@ -272,9 +284,9 @@
 #win .mpx-say{position:absolute;inset:-6px -8px;z-index:4;pointer-events:none;opacity:0;visibility:hidden;transition:opacity .35s,visibility .35s}
 #win .mpx-say.show{opacity:1;visibility:visible}
 /* うしろ幕。穴の形は js が SVG のマスクで作る */
-#win .mpx-dim{position:absolute;inset:0;border-radius:12px;background:rgba(20,10,45,.5);-webkit-mask:var(--hole,none) 0 0/100% 100% no-repeat;mask:var(--hole,none) 0 0/100% 100% no-repeat}
+#win .mpx-dim{position:absolute;inset:0;border-radius:12px;background:rgba(8,24,20,.55);-webkit-mask:var(--hole,none) 0 0/100% 100% no-repeat;mask:var(--hole,none) 0 0/100% 100% no-repeat}
 /* フキダシの高さは、穴にかぶらない所を js が決める（--sy） */
-#win .mpx-say p{position:absolute;left:50%;top:var(--sy,50%);translate:-50% 0;width:max-content;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:#fff;color:#2a1360;font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);transition:opacity .3s}
+#win .mpx-say p{position:absolute;left:50%;top:var(--sy,50%);translate:-50% 0;width:max-content;margin:0;max-width:min(86%,440px);padding:14px 20px;border-radius:18px;background:#fff;color:var(--ink);font-size:clamp(14px,2.6vw,17px);font-weight:800;line-height:1.55;text-align:center;word-break:auto-phrase;box-shadow:0 10px 24px -10px rgba(0,0,0,.5);transition:opacity .3s}
 #win .mpx-say.show p{animation:win-mxSay .4s cubic-bezier(.3,1.5,.5,1)}
 /* 続きのフキダシに切りかえる間は、フキダシだけ消す（うしろ幕は出したまま） */
 #win .mpx-say.next p{opacity:0}
@@ -291,7 +303,7 @@
 #win .mpx-team span{position:relative;margin-top:-10px;font-family:var(--f-num);font-size:11px;font-weight:800;letter-spacing:.04em;padding:0 3px;border-radius:3px;background:rgba(0,0,0,.35)}
 #win .mpx-track{position:relative;height:var(--dot);margin-right:calc(var(--dot) / 2);background:radial-gradient(circle,rgba(255,255,255,.85) 1.4px,transparent 1.6px) left center/14px 6px repeat-x}
 #win .mpx-track::before{content:"";position:absolute;left:-4px;top:50%;width:9px;height:9px;translate:0 -50%;border-radius:50%;background:#fff}
-#win .mpx-dot{--x:0%;position:absolute;left:var(--x);top:50%;translate:-50% -50%;width:var(--dot);height:var(--dot);border-radius:50%;background:#fff;color:#1b1630;display:grid;place-items:center;
+#win .mpx-dot{--x:0%;position:absolute;left:var(--x);top:50%;translate:-50% -50%;width:var(--dot);height:var(--dot);border-radius:50%;background:#fff;color:var(--ink);display:grid;place-items:center;
   font-family:var(--f-num);font-size:17px;font-weight:800;font-variant-numeric:tabular-nums;z-index:2;transition:left .9s cubic-bezier(.65,0,.35,1),background .3s}
 #win .mpx-dot > i{font-style:normal;display:block}
 /* 50pt に届いた玉は、オーラをくり返し放つ（止めていても続く） */
@@ -303,10 +315,10 @@
 #win .mpx-dot.hit::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid #d9ff7a;animation:win-mxRing .7s ease-out both;pointer-events:none}
 @keyframes win-mxRing{from{opacity:1;scale:1}to{opacity:0;scale:1.7}}
 /* +12 みたいな加点のエフェクト */
-#win .mpx-gain{position:absolute;left:50%;bottom:calc(100% + 2px);translate:-50% 0;z-index:3;font-family:var(--f-num);font-size:21px;font-weight:900;color:#d9ff7a;-webkit-text-stroke:4px #2a1360;paint-order:stroke fill;pointer-events:none;
+#win .mpx-gain{position:absolute;left:50%;bottom:calc(100% + 2px);translate:-50% 0;z-index:3;font-family:var(--f-num);font-size:21px;font-weight:900;color:#d9ff7a;-webkit-text-stroke:4px var(--ink);paint-order:stroke fill;pointer-events:none;
   animation:win-mxGain 2.1s cubic-bezier(.2,.8,.3,1) both}
 /* 加点の内訳（順位 + キル）。玉の右に小さく */
-#win .mpx-why{position:absolute;left:calc(100% + 6px);top:50%;translate:0 -50%;z-index:3;padding:2px 8px;border-radius:999px;background:rgba(20,10,45,.75);color:#fff;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;animation:win-mxWhy 2.1s ease both}
+#win .mpx-why{position:absolute;left:calc(100% + 6px);top:50%;translate:0 -50%;z-index:3;padding:2px 8px;border-radius:999px;background:rgba(8,24,20,.75);color:#fff;font-size:12px;font-weight:700;white-space:nowrap;pointer-events:none;animation:win-mxWhy 2.1s ease both}
 #win .mpx-gain.stay{animation:win-mxGainIn .5s cubic-bezier(.2,.8,.3,1) both}
 #win .mpx-why.stay{animation:win-mxWhyIn .4s ease both}
 #win .mpx-why.out{animation:win-mxWhyOut .3s ease both}
@@ -331,9 +343,9 @@
 /* 試合ボタンは串（だんご）の形。串の中を、進み具合に合わせて明るい色が満ちていく（ローディングバーのように） */
 @property --mxp{syntax:"<length>";inherits:false;initial-value:0px}
 #win .mpx-dots{--d:24px;--g:10px;position:relative;display:flex;gap:var(--g)}
-#win .mpx-bar{position:absolute;inset:0;z-index:0;pointer-events:none;--mxp:0px;background:linear-gradient(90deg,#d6c4ec var(--mxp),rgba(255,255,255,.16) var(--mxp))}
+#win .mpx-bar{position:absolute;inset:0;z-index:0;pointer-events:none;--mxp:0px;background:linear-gradient(90deg,#cde8c3 var(--mxp),rgba(255,255,255,.16) var(--mxp))}
 #win .mpx-dots button{position:relative;z-index:1;width:var(--d);height:var(--d);padding:0;border:0;border-radius:50%;background:none;color:#fff;font-family:var(--f-num);font-size:11px;font-weight:800;cursor:pointer}
-#win .mpx-dots button.done{color:#1b1630}
+#win .mpx-dots button.done{color:var(--ink)}
 #win .mpx-dots button:hover{box-shadow:0 0 0 2px #fff}
 #win .mpx-btns{display:flex;gap:6px}
 #win .mpx-b{width:34px;height:34px;display:grid;place-items:center;padding:0;border:0;border-radius:10px;background:rgba(255,255,255,.16);cursor:pointer}
@@ -341,13 +353,13 @@
 #win .mpx-b svg{width:16px;height:16px;fill:#fff;stroke:#fff}
 #win .mpx-b svg path:not([fill]){stroke:none}
 /* 共有ボタンを押したあとの「リンクをコピーしたよ」 */
-#win .mpx-toast{position:absolute;left:50%;bottom:58px;z-index:7;translate:-50% 8px;padding:7px 14px;border-radius:999px;background:#fff;color:#2a1360;font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .25s,translate .25s}
+#win .mpx-toast{position:absolute;left:50%;bottom:58px;z-index:7;translate:-50% 8px;padding:7px 14px;border-radius:999px;background:#fff;color:var(--ink);font-size:13px;font-weight:800;white-space:nowrap;box-shadow:0 8px 20px -8px rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .25s,translate .25s}
 #win .mpx-toast.on{opacity:1;translate:-50% 0}
 /* 最後まで見たら、ボードの右よりに丸いステッカーの「友だちにシェア」がぽんっと貼られる。ちょっといびつなまんまる。
    ゆらゆら揺れて、右上と左下に漫画の揺れの線（短い2本ずつ）を白で */
 #win .mpx-cta{--d:80px;position:absolute;left:calc(73% - 15px);top:42%;translate:-50% -50%;z-index:7;width:var(--d);height:var(--d);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:0;
   border:0;border-radius:0;background:url(../img/s1-maru-1.svg) center/100% 100% no-repeat;color:#fff;font:inherit;font-size:14px;font-weight:900;line-height:1.2;letter-spacing:.02em;cursor:pointer;
-  --sh:drop-shadow(0 4px 0 rgba(20,10,45,.45));rotate:-6deg;filter:var(--sh);opacity:0;visibility:hidden;scale:.4;transition:opacity .2s,visibility .2s,scale .45s cubic-bezier(.3,1.7,.5,1)}
+  --sh:drop-shadow(0 4px 0 rgba(8,24,20,.45));rotate:-6deg;filter:var(--sh);opacity:0;visibility:hidden;scale:.4;transition:opacity .2s,visibility .2s,scale .45s cubic-bezier(.3,1.7,.5,1)}
 #win .mpx-cta .ico{width:26px;height:26px;fill:#fff;stroke:#fff}
 #win .mpx-board.cta .mpx-cta{opacity:1;visibility:visible;scale:1}
 #win .mpx-cta:hover{filter:var(--sh) brightness(1.1)}
@@ -365,7 +377,7 @@
 #win .mpx-b .i-play{display:none}
 #win .mpx-board.paused .mpx-b .i-play{display:inline} #win .mpx-board.paused .mpx-b .i-pause{display:none}
 /* 画面を押して一時停止・再生したときの、真ん中のマーク（YouTube みたいに、ふわっと出て消える） */
-#win .mpx-flash{position:absolute;left:50%;top:45%;z-index:5;width:64px;height:64px;translate:-50% -50%;display:grid;place-items:center;border-radius:50%;background:rgba(20,10,45,.6);opacity:0;pointer-events:none}
+#win .mpx-flash{position:absolute;left:50%;top:45%;z-index:5;width:64px;height:64px;translate:-50% -50%;display:grid;place-items:center;border-radius:50%;background:rgba(8,24,20,.6);opacity:0;pointer-events:none}
 #win .mpx-flash svg{width:26px;height:26px;fill:#fff}
 #win .mpx-flash .i-play{display:none}
 #win .mpx-flash.play .i-play{display:inline} #win .mpx-flash.play .i-pause{display:none}
@@ -375,7 +387,7 @@
 #win .mpx-fx{position:absolute;inset:0;width:100%;height:100%;z-index:6;pointer-events:none}
 /* 始まる前は、ボードの上にスタートボタン */
 #win .mpx-start{--k:1;position:absolute;inset:0;z-index:5;display:flex;align-items:center;justify-content:center;gap:clamp(18px,5vw,56px);padding:16px;border:0;border-radius:inherit;
-  background:rgba(40,16,90,.38);-webkit-backdrop-filter:blur(7px) saturate(1.15);backdrop-filter:blur(7px) saturate(1.15);color:#fff;font:inherit;cursor:pointer;transition:opacity .3s,visibility .3s}
+  background:rgba(8,24,20,.38);-webkit-backdrop-filter:blur(7px) saturate(1.15);backdrop-filter:blur(7px) saturate(1.15);color:#fff;font:inherit;cursor:pointer;transition:opacity .3s,visibility .3s}
 #win .mpx-board.started .mpx-start{opacity:0;visibility:hidden}
 /* タイトル（haramasenyanko のSVG）。--k は SVG 1単位あたりの大きさ。4つとも同じ文字サイズで書き出してあるので、同じ倍率で並べる */
 #win .mpx-st-title{order:2;display:flex;flex-direction:column;align-items:flex-start;rotate:-8deg;filter:drop-shadow(0 3px 0 rgba(0,0,0,.35))}

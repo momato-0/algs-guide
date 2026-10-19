@@ -101,6 +101,7 @@ foldBtn.addEventListener("click", () => setFold(!fold.classList.contains("open")
 fold.addEventListener("click", e => { if(!fold.classList.contains("open") && !foldBtn.contains(e.target) && !$("win-fold-body").contains(e.target)) setFold(true); });
 $("win-fold-body").inert = true;
 fold.querySelector(".fold-foot").addEventListener("click", () => setFold(false));
+fold.querySelector(".fold-hit").addEventListener("click", () => setFold(false));
 if(window.ResizeObserver) new ResizeObserver(linkFinals).observe($("win"));
 /* マッチポイント形式のスライド：0pt から8試合。6試合目で2チーム点灯、7・8試合目で CAT が連続チャンピオンの逆転優勝。
    基本は自動で進み、一時停止・試合ボタンで好きな試合・最初からもできる */

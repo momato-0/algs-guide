@@ -1,0 +1,50 @@
+/* ダークモード：data-theme="dark" のときだけ効く（切りかえは js/theme-try.js）
+   考え方：ページの地を夜の深緑にして、カード・ナビ・窓などの「紙の部品」はライトのまま浮かせる。
+   地の上にじかに書いた文字や線だけ、クリームに入れかえる。ぼかさないずらし影は、地の上ではクリームのうすい影にする */
+:root[data-theme="dark"]{
+  --night:#0d1f1a;
+  --on-night:var(--paper);
+  --night-line:rgba(246,240,228,.2);
+  --night-shadow:rgba(246,240,228,.28);
+  /* 決勝までの道の矢印：深緑の地でもはっきり見える明るさに（地とのコントラスト 5.7:1 / 6.6:1） */
+  --top-line:#ff8b73; --bot-line:#5ec3f2;
+  color-scheme:dark;
+}
+[data-theme="dark"] body{background:var(--night);color:var(--on-night)}
+[data-theme="dark"] .noise{mix-blend-mode:screen;opacity:.05}
+
+/* ナビ：部品はクリームのまま、影だけ見えるように */
+[data-theme="dark"] .nav-bar,[data-theme="dark"] .nav-box,[data-theme="dark"] .nav-sq,[data-theme="dark"] .lang-menu{color:var(--ink);box-shadow:3px 3px 0 var(--night-shadow)}
+[data-theme="dark"] .nav-sq.dark{color:var(--paper);border-color:var(--paper)}
+[data-theme="dark"] .tv-btn{filter:drop-shadow(3px 3px 0 var(--night-shadow))}
+[data-theme="dark"] .drawer-panel{color:var(--ink)}
+[data-theme="dark"] .watch-blob{color:var(--ink);box-shadow:4px 5px 0 var(--night-shadow)}
+
+/* ヒーロー：地にじかに書いた文字と線をクリームに */
+[data-theme="dark"] .hero::before{background-image:linear-gradient(rgba(246,240,228,.045) 1px,transparent 1px),linear-gradient(90deg,rgba(246,240,228,.045) 1px,transparent 1px)}
+[data-theme="dark"] .big-line.offset{background:var(--paper);color:var(--ink)}
+[data-theme="dark"] .btn-pill{color:var(--ink);box-shadow:4px 4px 0 var(--night-shadow)}
+[data-theme="dark"] .btn-pill:hover{box-shadow:1px 1px 0 var(--night-shadow)}
+[data-theme="dark"] .hero-art .sun{stroke:var(--paper)}
+[data-theme="dark"] .hero-art .ray{stroke:var(--paper)}
+[data-theme="dark"] .speech{color:var(--ink)}
+
+/* ガイド：地は今までの深緑のまま（ページの地より少し明るいので、段がついて見える） */
+[data-theme="dark"] .guide-section{background:var(--ink)}
+
+/* 01 の決勝までの道（アコーディオンの中）：地を深緑に。箱やタグは紙の部品なのでそのまま、線と文字だけ明るく */
+[data-theme="dark"] #win .tournament-feature,[data-theme="dark"] #win .tournament-content > div{background:var(--ink)}
+[data-theme="dark"] #win .tournament-content > div{--line:var(--night-line)}
+[data-theme="dark"] #win .tournament-content > div::after{background:linear-gradient(rgba(23,54,47,0),var(--ink))}
+[data-theme="dark"] #win .day,[data-theme="dark"] #win .legend{color:rgba(246,240,228,.75)}
+[data-theme="dark"] #win .fold-foot{color:var(--paper)}
+[data-theme="dark"] #win .fold-foot i{background:var(--paper)}
+[data-theme="dark"] #win .fold-foot i::before{background:var(--ink)}
+[data-theme="dark"] #win .fold-foot:hover i{background:color-mix(in srgb,var(--paper) 80%,var(--coral))}
+
+/* フッター */
+[data-theme="dark"] .foot{--line:var(--night-line)}
+
+/* 仮の切りかえボタン（左下）。全部できたら、このボタンと js/theme-try.js のボタン部分を外す（端末の設定に合わせる動きは残す） */
+.theme-try{position:fixed;left:14px;bottom:14px;z-index:45;display:flex;align-items:center;gap:8px;min-height:44px;padding:8px 16px;border:2px solid var(--ink);border-radius:100px;background:var(--white);color:var(--ink);font-size:14px;font-weight:800;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
+[data-theme="dark"] .theme-try{box-shadow:3px 3px 0 var(--night-shadow)}

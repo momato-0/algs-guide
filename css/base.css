@@ -6,6 +6,8 @@
   --muted:#5d6f69; --line:color-mix(in srgb,var(--ink) 18%,transparent);
   /* 決勝までの道：Top（上位）は赤、Bot（下位）は青 */
   --top:#e5492f; --top-soft:#ffe1da; --bot:#2f8fc4; --bot-soft:#dcf0f9;
+  /* 矢印の線と凡例の色（ダークでは、地に沈まないよう明るくする） */
+  --top-line:var(--top); --bot-line:var(--bot);
   --lit:#ffcf33; --lit-ink:#4a3600; --fan:rgb(113,44,249); --accent:var(--coral);
   /* セクション1の図で使う色（中身は上の色から） */
   --surface:var(--white); --node:var(--white); --node-line:var(--ink); --node-top:var(--white); --node-bot:var(--white); --node-hi:transparent; --chip:var(--paper); --sep:var(--line);
