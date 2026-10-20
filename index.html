@@ -14,6 +14,8 @@
   <!-- ダークモード（色は css/dark.css、切りかえは js/theme-try.js） -->
   <link rel="stylesheet" href="css/dark.css">
   <script src="js/theme-try.js"></script>
+  <!-- 開発中だけの調整パネル：URL に ?tune があるときだけ読む（ふだんは何も読まない） -->
+  <script>if(new URLSearchParams(location.search).has("tune")){const s=document.createElement("script");s.src="js/dev-tune.js";document.head.appendChild(s)}</script>
 </head>
 
 <body>
@@ -107,7 +109,7 @@
           <div class="feature-guide-heading">
             <div><span class="feature-number">01</span><span class="feature-english">HOW TO WIN</span></div>
             <div>
-              <h3 id="win-h">どうなったら勝ち？</h3>
+              <h3 id="win-h">どうなったら<wbr>勝ち？</h3>
             </div>
           </div>
 

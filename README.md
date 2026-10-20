@@ -21,6 +21,10 @@ ALGS をもっと気軽に観るための、ファンが作った非公式ガイ
 | teams | 03 注目チーム | 準備中 |
 | ban | 04 BANシステム | 準備中 |
 
+## 開発用の調整パネル
+
+URL に `?tune` を付けて開く（例：`http://localhost:8765/?tune`）と、右下に見た目の調整パネルが出る（`js/dev-tune.js`）。`?tune` がないときは、このファイルは読みこまれない。
+
 ## 素材のクレジット
 
 - マッチポイント形式のスライドのアイコン（img/team-apple.png・team-beer.png・team-cat.png）：Flaticon（Magnific）。クレジットはページ下のフッター（Thanks to）に表示

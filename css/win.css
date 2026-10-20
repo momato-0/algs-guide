@@ -9,7 +9,7 @@
 #win .feature-number{font-family:var(--f-head);font-size:4.4rem;line-height:.85}
 /* 縦の英字ラベルは、ほかのカード（.card-english）と同じ右上に */
 #win .feature-english{position:absolute;top:30px;right:25px;font-size:12px;font-weight:800;letter-spacing:.16em;writing-mode:vertical-rl}
-#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-body);font-size:clamp(1.9rem,3.8vw,2.7rem);font-weight:800;line-height:1.2;letter-spacing:-.04em}
+#win .feature-guide-heading h3{margin:0 0 5px;font-family:var(--f-body);font-size:clamp(1.9rem,3.8vw,2.7rem);font-weight:800;line-height:1.2;letter-spacing:-.04em;word-break:keep-all}
 #win .feature-guide-heading p{margin:0;font-size:16px;font-weight:700}
 #win .feature-layout{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(360px,.85fr);gap:18px}
 #win .feature-label{display:block;font-size:13px;font-weight:800;letter-spacing:.16em;opacity:.82}
